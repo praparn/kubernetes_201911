@@ -9,10 +9,7 @@ metadata:
     module: Job
     environment: development
 spec:
-  schedule: "1 * * * *"
-  concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 2
-  failedJobsHistoryLimit: 1
+  schedule: "*/10 * * * *"
   jobTemplate:
     spec:
       template:
