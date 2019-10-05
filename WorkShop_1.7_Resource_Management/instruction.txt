@@ -4,16 +4,18 @@ Note: This instruction will demonstrate about how to manage resouce in cluster w
 Part0: Create Dashboard
 ====================================================
 1. Create Dashboard by command:
-	kubectl create secret generic kubernetes-dashboard-certs --from-file=$HOME/kubernetes_201911/WorkShop_1.7_Resource_Management/certs -n kubernetes-dashboard
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard-restrict.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/user-restrict.yml
-
+	kubectl create namespace kubernetes-dashboard
+	kubectl create secret generic kubernetes-dashboard-certs --from-file=$HOME/kubernetes_201911/WorkShop_1.7_Resource_Management/cert -n kubernetes-dashboard
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard-restrict.yml
+	
 2. Check Bearer Token for access by command:
-	kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/user-restrict.yml
+	kubectl get secret -n kubernetes-dashboard 
+	kubectl describe secret <kubernetes-dashboard-token-xxx> -n kubernetes-dashboard
 	*Remark: Record Token:
 	Ex:
 	------------------------------------------------------------------------------------
-eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10b2tlbi1sZmNwcSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjhkZDU5Nzg3LTMwMDQtNDBiMS05ZjIxLTEyOTZiNjJlYmEzNyIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDprdWJlcm5ldGVzLWRhc2hib2FyZCJ9.5VfLCTO3_ng6lg_qhsKaJUiBZ1Uj-B6ZKtx26udhFj2iaul5f_IIHYlz3NId-s9CWzc_UAZzOjh6HG9tr6nzZ5unhI1Ur12lTxqhv4z2awzrKmzBdbwFktZtevh40K0G6Fc4jWRwo33Yq0kVpiKbM6yMlrDpq5ynZX1gF42ROKVsqh-sGf-BZQSSwhW-_I40PvgQOWMx9MLckhNpjbLQzSiBTEgidf5g_CzHEZPgh4tZAFS62OYmN5OZhFkmmedkVaW9Xiq6VpEwhnKTcupTXdPY-iiVgCUsuAroNOzSVXwlyNpxQrmWjpk991wg76RA3zzje3_80Fktc7ULjINkXQ
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10b2tlbi03Y3FiNSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE2MGRhYWMwLWNhZWMtNGJkOC1iYWQ3LTRhMjYwN2IxYTMzNCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDprdWJlcm5ldGVzLWRhc2hib2FyZCJ9.jLne5cp9wHrqZNBYpGG1Ewlvj2XBuOvOng4SAfdY29vqJTWr1vbD8Ce_FS-B56JHbw4LbbU7r99LihW4ASHcFEViraLRcX3AaA-N-PqXUFf6oaUSAptAl3k5Zc2XX7fRxu7qT5hWTepJyoTbV0RwWQxrDQ0IZKbVTtiULCUrJtWRKeNVbqvN1p4WwDCIoDywKag8whXyVPw6GZohIwNipNBBH4qCRCu4CPyP9N3IqWERKJ7Jdltxh8XPFQ3pf3rysUE6dIeS-CgVAVWjT_KOGlL34PnYv5xZ9lQCvQ-zQ27-4dgRwiAiKYIEfy3ZkGxLrUUseEMJ7493e0IDLyPYiw	------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------
 
 3. Open Kubernetes's proxy for operate:
