@@ -11,24 +11,21 @@ Part0: Create Dashboard
 2. Check Bearer Token for access by command:
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/user-restrict.yml
 	kubectl get secret -n kubernetes-dashboard 
-	kubectl describe secret <kubernetes-dashboard-token-xxx> -n kubernetes-dashboard
+	kubectl describe secret <admin-user-token-xxx> -n kubernetes-dashboard
 	*Remark: Record Token:
 	Ex:
 	------------------------------------------------------------------------------------
-eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10b2tlbi03Y3FiNSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE2MGRhYWMwLWNhZWMtNGJkOC1iYWQ3LTRhMjYwN2IxYTMzNCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDprdWJlcm5ldGVzLWRhc2hib2FyZCJ9.jLne5cp9wHrqZNBYpGG1Ewlvj2XBuOvOng4SAfdY29vqJTWr1vbD8Ce_FS-B56JHbw4LbbU7r99LihW4ASHcFEViraLRcX3AaA-N-PqXUFf6oaUSAptAl3k5Zc2XX7fRxu7qT5hWTepJyoTbV0RwWQxrDQ0IZKbVTtiULCUrJtWRKeNVbqvN1p4WwDCIoDywKag8whXyVPw6GZohIwNipNBBH4qCRCu4CPyP9N3IqWERKJ7Jdltxh8XPFQ3pf3rysUE6dIeS-CgVAVWjT_KOGlL34PnYv5xZ9lQCvQ-zQ27-4dgRwiAiKYIEfy3ZkGxLrUUseEMJ7493e0IDLyPYiw	------------------------------------------------------------------------------------
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWZycXh4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiNmQxMmQ5MS04MTI4LTQ1YzQtYmY3OC00NmE5MDExYmFmYzMiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.hLHaARxgT5jdVCRjnfhN0W37MuVjjoIU-xnUt-FJorZ4w3iHuQfDReRVaYrvdf7mx2w_sR1CVa14KUjT-au6BSbRXDGTmQCdR6CMrAX5R7xpEJE__ekracZXyEENn3S8sAUBA2ApJzrVibDKIDwn6Ri0GYiDbP2ux4pGotqzJaycaz9TKS_6bEbKTYyOBm_uQ10qX3XXft0LgQTHLvZ7ddilx4faFMZ38HUa3rQUCxNmJ4Fs4urY1KZVOHoqnArVeQMhThweQkB3caJGYFs_cyvdna7_LaCF5sgUoljsJE0WscVAuSWf-8UNREIV63C3MbOzgsfuoj7EtE1X3ih3zw
 	------------------------------------------------------------------------------------
 
 3. Open Kubernetes's proxy for operate:
 	kubectl get pods -n=kubernetes-dashboard
 	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
 	(Ex: kubectl port-forward --address 0.0.0.0 pods/kubernetes-dashboard-7b5bf5d559-stwjc 8443:8443 -n=kubernetes-dashboard)
+
 	*Test by open browser: 
 	https://<Public IP>:8443
-
-	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
-
-	*Test by open browser: 
-	http://<Public IP>:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/
+	
 ====================================================
 Part1: Container level configuration:
 ====================================================

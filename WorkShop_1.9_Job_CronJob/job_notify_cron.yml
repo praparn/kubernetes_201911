@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: linenotify
+  labels:
+    name: linenotify
+    owner: Praparn_L
+    version: "1.0"
+    module: Job
+    environment: development
+spec:
+  schedule: "1 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: linenotify
+              image: labdocker/linenotify:onetime
+              env:
+              - name: TITLE
+                value: "BOT NOTIFY:Praparn L."
+              - name: INTERVAL
+                value: "10000"
+              - name: HEAP_HIGH
+                value: "20"
+              - name: MEM_HIGH
+                value: "20"
+              - name: SH_OS
+                value: "N"
+              - name: TOKEN
+                value: "EIeqyillzkzpaCo1ROrebZTcGbIyzDZHpOjcdd0t6CX"
+            restartPolicy: Never
