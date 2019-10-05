@@ -33,4 +33,4 @@ spec:
                 value: "N"
               - name: TOKEN
                 value: "EIeqyillzkzpaCo1ROrebZTcGbIyzDZHpOjcdd0t6CX"
-            restartPolicy: Never
+          restartPolicy: Never
