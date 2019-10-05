@@ -64,11 +64,9 @@ kubectl get jobs --all-namespaces | sed '1d' | awk '{ print $2}'| while read lin
 	kubectl get cronjob -o wide
   kubectl get jobs --watch
 
-  ****After Complete Pods will gone. We can view all complete by command***
-  kubectl get pods -o wide
 
 10. Check Detail of Job by command:
-	kubectl describe jobs/linenotify
+	kubectl describe jobs/<job name>
 
 11. Monitor Result on LINE Application:
 

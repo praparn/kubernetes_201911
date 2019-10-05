@@ -10,6 +10,8 @@ metadata:
     environment: development
 spec:
   schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
