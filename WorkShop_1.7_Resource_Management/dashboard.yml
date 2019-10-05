@@ -193,6 +193,7 @@ spec:
             - containerPort: 9090
               protocol: TCP
           args:
+            - --enable-insecure-login
             - --namespace=kubernetes-dashboard
           # Uncomment the following line to manually specify Kubernetes API server Host
           # If not specified, Dashboard will attempt to auto discover the API server and connect
