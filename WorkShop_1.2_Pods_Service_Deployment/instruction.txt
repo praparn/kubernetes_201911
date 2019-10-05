@@ -78,7 +78,7 @@ This workshop will create Pods with multiple container
 	kubectl create -f webmodule_svc.yml  (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml )
 	kubectl get svc
 
-5. Check ip address of minikube by command: ifconfig
+5. Check ip address by command: ifconfig (Check: ens5 device)
 
 6. Set environment for test by command:
 	export Server_IP=<Private IP>

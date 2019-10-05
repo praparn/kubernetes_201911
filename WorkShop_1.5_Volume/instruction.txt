@@ -1,4 +1,4 @@
-Instruction for Workshop 1.5 Vo.ume:
+Instruction for Workshop 1.5 Volume:
 Note: This instruction will demonstrate about how to manage use Volume:
 ====================================================
 Volume by HostPath:

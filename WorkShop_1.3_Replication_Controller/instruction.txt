@@ -37,7 +37,7 @@ Note: This instruction will demonstrate about how to use RC for maintain avaliab
 	webtest-cns49   1/1       Running   0          11m
 	---------------------------------------------------
 
-	kubectl delete pods webtest-9m8tx
+	kubectl delete pods <target pods's name>
 
 7. Check result again by command:
 	kubectl get pods

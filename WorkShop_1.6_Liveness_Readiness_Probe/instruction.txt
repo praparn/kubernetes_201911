@@ -20,12 +20,13 @@ This workshop will use execute some command on container for probe
 2. Test access browser/curl: http://<Public IP>:32500
 
 3. Access to container on pods and try to delete the file "main.py"
+	kubectl get pods
 	kubectl exec -it <pods name> sh -c webtest
 	rm main.py
 	exit	
 
 4. Check status of Pods by command: (Wait about 2 -3 min)
-	kubectl get pods --show-labels
+	watch kubectl get pods --show-labels
 	kubectl describe pods/<pods name>
 
 5. Access to container on pods and try to delete the file "main.py"
@@ -126,13 +127,13 @@ This workshop will use execute some command on container for probe
 
 2. Test access browser/curl: http://<Public IP>:32500 (5 - 6 Time)
 
-3. Access to container on pods (Deployment webtest1) and try to delete the file "main.py"
+3. Access to cotainer on pods (Deployment webtest1) and try to delete the file "main.py"
 	kubectl exec -it <pods name> sh -c webtest
 	rm main.py
 	exit	
 
 4. Check status of Pods (Deployment webtest1) by command:
-	kubectl get pods --show-labels
+	watch kubectl get pods --show-labels
 	kubectl describe pods/<pods name>
 
 5. Test access browser/curl: http://<Public IP>:32500 (5 - 6 Time)
@@ -143,7 +144,7 @@ This workshop will use execute some command on container for probe
 	exit
 
 7. Check status of Pods (Deployment webtest1) by command:
-	kubectl get pods --show-labels
+	watch kubectl get pods --show-labels
 	kubectl describe pods/<pods name>
 
 8. Test access browser/curl: http://<Public IP>:32500 (5 - 6 Time)

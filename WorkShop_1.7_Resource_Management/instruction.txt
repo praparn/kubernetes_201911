@@ -1,7 +1,7 @@
 Instruction for Workshop 1.7_Resource_Management_and_HPA:
 Note: This instruction will demonstrate about how to manage resouce in cluster with namespace and HPA:
 ====================================================
-Part0: Create Dashboard and Metric Server
+Part0: Create Dashboard
 ====================================================
 1. Create Dashboard by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard.yml
