@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webtest
+  labels:
+    name: web
+    owner: Praparn_L
+    version: "1.0"
+    module: WebServer
+    environment: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: web
+      owner: "Praparn_L"
+      version: "1.0"
+      module: WebServer
+      environment: development
+  template:
+    metadata:
+      labels:
+        name: web
+        owner: Praparn_L
+        version: "1.0"
+        module: WebServer
+        environment: development
+    spec:
+      containers:
+        - name: webtest
+          image: labdocker/cluster:webservicelite_v1
+          ports:
+          - containerPort: 5000
+            protocol: TCP
+          volumeMounts:
+          - name: aws-share-pvc
+            mountPath: /usr/src/app
+      initContainers:
+        - name: download
+          image: labdocker/alpineweb:latest
+          volumeMounts:
+          - name: aws-share-pvc
+            mountPath: /source
+          command:
+          - wget
+          - "-O"
+          - "/source/mainlite.py"
+          - https://raw.githubusercontent.com/praparn/kubernetes_201904/master/WorkShop_2.7_Persistent_Storage/mainlite.py
+      volumes:
+      - name: aws-share-pvc
+        persistentVolumeClaim:
+          claimName: aws-ebs-pvc

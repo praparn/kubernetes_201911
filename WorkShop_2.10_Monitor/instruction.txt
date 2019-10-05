@@ -1,0 +1,114 @@
+Instructor for Monitor Kubernetes Farm with Prometheus and Grafana:
+====================================================
+Part1: Install Metric Server
+====================================================
+1. (Master) Create Metric Server:
+	cd ~/kubernetes_201907/WorkShop_2.8_HPA_WorkShop/metrics-server/
+	kubectl create -f deploy/1.8+/
+	kubectl get pods --all-namespaces
+	kubectl logs pods/<metrics's pods name> -n=kube-system
+
+2. (Master) Test get performance data from metric server by command:
+	kubectl top nodes
+
+====================================================
+Part2: Install Helm & Tiller
+====================================================
+### Run on Master Node ###
+1. Install helm client on master node by command:
+		curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+		chmod 700 get_helm.sh
+		./get_helm.sh
+
+2. Enable role for tiller by command:
+        kubectl create clusterrolebinding tiller-cluster-admin \
+                --clusterrole=cluster-admin \
+                --serviceaccount=kube-system:default
+    
+3. Initial Helm by command:
+		helm init --history-max 200
+	
+4. Monitor Tiller until it ready:
+		watch kubectl get pods -n=kube-system
+
+5. Check helm readiness by command:
+		helm list			==> Expect blank
+
+====================================================
+Part3: Create Application and Service for Operate
+====================================================
+1. (Master) Create HPA by command:
+	kubectl create -f webtest_deploy_hpa.yml (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
+	 
+2. (Master) Check Pods status by command:
+	kubectl get deployment/webtest -o wide
+	kubectl get svc/webtest -o wide
+
+3. (Master) Test Access by url:
+	http://x.x.x.x:32500
+
+====================================================
+Part4: Install Prometheus-operator
+====================================================
+
+1. (Master) Install Prometheus-operator by command:
+	helm install stable/prometheus-operator --name prometheus-operator --namespace monitoring
+
+2. (Master) Check result of pods by commands:
+	watch kubectl get pods -n monitoring
+
+3. (Master) Check CustomerResourceDefinition by command:
+	kubectl get CustomResourceDefinition
+	############################################
+	*Remark:  Expect to found record below
+prometheuses.monitoring.coreos.com            2019-03-09T17:06:47Z
+prometheusrules.monitoring.coreos.com         2019-03-09T17:06:47Z
+servicemonitors.monitoring.coreos.com         2019-03-09T17:06:47Z
+alertmanagers.monitoring.coreos.com           2019-03-09T17:17:05Z
+	############################################
+
+*Remark: In case you need to roll-back this case: (Wait 5 min before start next deploy)
+	helm delete prometheus-operator
+	kubectl delete crd prometheuses.monitoring.coreos.com
+	kubectl delete crd prometheusrules.monitoring.coreos.com
+	kubectl delete crd servicemonitors.monitoring.coreos.com
+	kubectl delete crd alertmanagers.monitoring.coreos.com
+	
+
+====================================================
+Part4: Open dashboard for access
+====================================================
+1. (Master) Check pods name and service name by command: 
+	kubectl get pods -n=monitoring				==> Record name of grafana, prometheus pods
+	kubectl get svc -n=monitoring
+
+2. (Master) Set port-forward for Grafana's dashboard
+	kubectl port-forward --address 0.0.0.0 pods/<Grafana pods's name> 3000:3000 -n=monitoring
+	(Ex: kubectl port-forward --address 0.0.0.0 pods/grafana-5d8f767-25lx5 3000:3000 -n=monitoring)
+
+	*Optional: For run from local machine
+	kubectl --kubeconfig ./adminconfig.conf port-forward <Grafana pods's name> 3000 -n=monitoring
+	(Ex: kubectl --kubeconfig ./adminconfig.conf port-forward --address 0.0.0.0 pods/prometheus-operator-grafana-544db856cf-zl2dp 3000:3000 -n=monitoring)
+
+3. (local) Open browser and open granfana dashboard by url http://<Public IP of Master>:3000
+	Username: admin
+	Password: prom-operator
+	*Remark: check by command: 
+	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+	kubectl get secret --namespace monitoring prometheus-operator-grafana -o jsonpath="{.data.admin-user}" | base64 --decode ; echo
+
+====================================================
+Part5: Test generate load
+====================================================
+1. (Master) Generate Load:
+	kubectl run -i --tty load-generator --image=busybox /bin/sh			==> <Check Until Load Generator WorkFine>
+	wget -q -O- http://webtest.default.svc.cluster.local:5000
+	while true; sleep 0.001; do wget -q -O- http://webtest.default.svc.cluster.local:5000; done
+
+2. (Master) Monitor Performance via Grafana: (Interval is 5 min)
+
+3. (Master) Scale Down by Ctrl+C on load-generate
+
+4. (Master) CleanUp Lab
+	kubectl delete deployment/load-generator
+	kubectl delete -f webtest_deploy_hpa.yml (In case github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)

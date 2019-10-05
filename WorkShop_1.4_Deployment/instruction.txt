@@ -1,0 +1,89 @@
+Instruction for Workshop 1.4 Deployment:
+Note: This instruction will demonstrate about how to use Deployment/RS for deploy Pods and service:
+====================================================
+
+1. Get command prompt for access folder workshop 1.4 by command :cd /xxxx/WorkShop_1.4_Deployment/
+2. Check File on WorkShop
+
+3. Create Deployment and check status by command:
+	kubectl create -f webtest_deploy.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record)
+	kubectl get deployment
+	kubectl get pods --show-labels
+
+4. Create Service and check status by command:
+	kubectl create -f webtest_svc.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_svc.yml --record)
+	kubectl get svc
+	---------------------------------------------------
+	Example: Port mapping outside on TCP:32500
+	---------------------------------------------------
+	NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
+  kubernetes   10.0.0.1     <none>        443/TCP          8d
+  webtest      10.0.0.6     <nodes>       5000:32500/TCP   6s
+	---------------------------------------------------
+
+5. Check ReplicaSet by command:
+	kubectl get rs
+
+6. Test curl and web browser for access web by command:
+
+	open browser for test can operate: http://<Public IP>:32500
+
+7. Check detail of deployment by command:
+	kubectl describe deployment/webtest
+
+8. Update version of image on deployment by command:
+	kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.51rc --record=true
+
+9. Check rollout status by command:
+	kubectl rollout status deployment/webtest
+
+10. Check status of deployment, rs, pods by command:
+	kubectl get deployment
+	kubectl get rs
+	kubectl get pods
+
+11. Test curl and web browser for access web by command:
+
+	open browser for test can operate: http://<Public IP>:32500
+
+
+12. Update version of image on deployment by command:
+	kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.8ga --record=true
+
+13. Check rollout status by command:
+	kubectl rollout status deployment/webtest
+
+14. Check status of deployment, rs, pods by command:
+	kubectl get deployment
+	kubectl get rs
+	kubectl get pods
+
+15. Test curl and web browser for access web by command:
+		curl http://<Private IP>:32500
+
+		open browser for test can operate: http://<Public IP>:32500
+
+16. Check revision of change on history:
+	kubectl rollout history deployment/webtest
+
+	---------------------------------------------------
+	Example: History Result
+	---------------------------------------------------
+	deployment.extensions/webtest 
+	REVISION  CHANGE-CAUSE
+	1         kubectl create --filename=https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record=true
+	2         kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.51rc --record=true
+	3         kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.8ga --record=true
+	---------------------------------------------------
+
+17. Rollback revision "2" of rollout with command:
+	kubectl rollout undo deployment/webtest --to-revision=2
+	kubectl rollout status deployment/webtest
+
+18. Test curl and web browser for access web by command:
+
+			open browser for test can operate: http://<Public IP>:32500
+
+20. Cleanup Lab by command:
+	kubectl delete -f webtest_deploy.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml)
+	kubectl delete -f webtest_svc.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_svc.yml)

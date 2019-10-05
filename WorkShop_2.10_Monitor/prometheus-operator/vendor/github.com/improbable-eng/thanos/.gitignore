@@ -1,0 +1,21 @@
+/prometheus
+/thanos
+vendor/
+.dep-finished
+/.vendor-new
+
+# Ignore minikube setup working dirs.
+kube/bin
+kube/.kube
+kube/.minikube
+
+# Ignore e2e working dirs.
+data/
+
+# Ignore promu artifacts.
+/.build
+/.release
+/.tarballs
+
+/.idea
+/*.iml

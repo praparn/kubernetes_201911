@@ -1,0 +1,111 @@
+Instruction for Workshop 1.7_Resource_Management_and_HPA:
+Note: This instruction will demonstrate about how to manage resouce in cluster with namespace and HPA:
+====================================================
+Part0: Create Dashboard and Metric Server
+====================================================
+1. Create Dashboard by command:
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/dashboard.yml
+
+	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
+
+	*Test by open browser: http://<Public IP>:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/   
+====================================================
+Part1: Container level configuration:
+====================================================
+1. Get command prompt for access folder workshop 1.7 by command :cd /xxxx/WorkShop_1.7_Resource_Management_and_HPA
+2. Check file on WorkShop
+3. Create Pods/Cadvisor by command:
+	kubectl create -f webtest_pod.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_pod.yml )
+	kubectl create -f cadvisor_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml )
+	kubectl get pods --show-labels
+
+4. Open another shell for access minikube vm by command:
+	Open browser: http://<Public IP>:31000
+	export TERM=xterm
+	sudo apt-get install -y htop
+	htop
+
+5. Generate Load (T1) and check load on another terminal by command:
+	kubectl exec webtest -c webtest md5sum /dev/urandom
+	<Ctrl+C> for exit execute shell
+	htop
+
+6. Generate Load (T2) and check load on another terminal by command:
+	kubectl exec webtest -c webtest md5sum /dev/urandom
+	<Ctrl+C> for exit execute shell
+	htop
+
+7. Generate Load (T3) and check load on another terminal by command:
+	kubectl exec webtest -c webtest md5sum /dev/urandom
+	<Ctrl+C> for exit execute shell
+	htop
+
+8. Generate Load (T4) and check load on another terminal by command:
+	kubectl exec webtest -c webtest md5sum /dev/urandom
+	<Ctrl+C> for exit execute shell
+	htop
+
+9. Check configure for resource allocation on node by command:
+	kubectl describe node
+
+10. Cancel all work load and Delete Pods by command:
+	kubectl delete -f webtest_pod.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_pod.yml)
+
+
+====================================================
+Part 2: Name space level configuration:
+====================================================
+
+1. Create Namespace by command:
+	kubectl create -f webtest_namespace.yml (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)
+
+2. Create Quota and attach to Namespace and view describe by command:
+	kubectl create -f webtest_quota.yml  --namespace=webtest-namespace (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_quota.yml  --namespace=webtest-namespace)
+	kubectl describe namespace/webtest-namespace
+
+3. Try to create deployment by command:
+	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
+
+4. Check completeness of deployment/rs/pods/svc by command:
+	kubectl get deployment/webtest --namespace=webtest-namespace
+	kubectl get rs --namespace=webtest-namespace
+	kubectl get svc/webtest --namespace=webtest-namespace
+	kubectl get pods --namespace=webtest-namespace
+
+5. Check full describe of deployment/rs/pod by command:
+	kubectl describe deployment/webtest --namespace=webtest-namespace
+	kubectl describe rs --namespace=webtest-namespace
+
+6. Create LimitRange attach to Namespace and view descibe by command:
+	kubectl create -f webtest_limit.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_limit.yml  --namespace=webtest-namespace)
+	kubectl describe namespace/webtest-namespace
+
+7. Recreate Deployment by command:
+	kubectl delete -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml  --namespace=webtest-namespace)
+	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
+
+8. Check completeness of deployment/rs/pods/svc by command:
+	kubectl get deployment/webtest --namespace=webtest-namespace
+	kubectl get rs --namespace=webtest-namespace
+	kubectl get svc/webtest --namespace=webtest-namespace
+	kubectl get pods --namespace=webtest-namespace
+
+9. Verify configuration on Pods by command:
+	kubectl describe pods <pods name> --namespace=webtest-namespace
+
+10. Start burn test cpu and monitor cpu by command:
+	kubectl exec <pod name> -c webtest md5sum /dev/urandom --namespace=webtest-namespace
+	<When finished> <Ctrl+c> for cancel
+	htop
+
+11. Set resource for Deployment to Normal "0.8CPU", "800MB memory" by command:
+kubectl set resources deployment/webtest --limits=cpu="1",memory=1Gi --requests=cpu="0.8",memory=800Mi --record --namespace=webtest-namespace
+kubectl rollout status deployment/webtest --namespace=webtest-namespace
+kubectl get rs --namespace=webtest-namespace
+kubectl get pods --namespace=webtest-namespace
+kubectl describe pods <pods name> --namespace=webtest-namespace
+
+12. Clean up lab by command:
+	kubectl delete -f webtest_deploy.yml --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml --namespace=webtest-namespace)
+	kubectl delete -f cadvisor_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml)
+	kubectl delete -f webtest_namespace.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)

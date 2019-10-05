@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maindb
+  namespace: webmicroservice
+  labels:
+    name: "maindb"
+    owner: "Praparn_L"
+    version: "1.0"
+    module: "maindb"
+    environment: "development"
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    name: "maindb"
+    owner: "Praparn_L"
+    version: "1.0"
+    module: "maindb"
+    environment: "development"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maindb
+  namespace: webmicroservice
+  labels:
+    name: "maindb"
+    owner: "Praparn_L"
+    version: "1.0"
+    module: "maindb"
+    environment: "development"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "maindb"
+      owner: "Praparn_L"
+      version: "1.0"
+      module: "maindb"
+      environment: "development"
+  template:
+    metadata:
+      labels:
+        name: "maindb"
+        owner: "Praparn_L"
+        version: "1.0"
+        module: "maindb"
+        environment: "development"
+    spec:
+      containers:
+        - name: maindb
+          image: labdocker/mariadb:latest
+          ports:
+          - containerPort: 3306
+            protocol: TCP
+          env:
+            - name: username
+              valueFrom:
+                secretKeyRef:
+                  name: databasemodule-secret
+                  key: username
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databasemodule-secret
+                  key: password

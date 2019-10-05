@@ -1,0 +1,122 @@
+====================================================
+Part0: Install Helm & Tiller
+====================================================
+### Run on Master Node ###
+1. Install helm client on master node by command:
+		curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+		chmod 700 get_helm.sh
+		./get_helm.sh
+
+2. Enable role for tiller by command:
+        kubectl create clusterrolebinding tiller-cluster-admin \
+                --clusterrole=cluster-admin \
+                --serviceaccount=kube-system:default
+    
+3. Initial Helm by command:
+		helm init --history-max 200
+	
+4. Monitor Tiller until it ready:
+		watch kubectl get pods -n=kube-system
+
+5. Check helm readiness and update by command:
+		helm list			==> Expect blank
+    helm repo update ==> Update helm
+
+    (Remark: Case to rollback and reinitial helm/tiller: helm reset --force)
+
+====================================================
+Part 1: Deploy grafana via helm:
+====================================================
+1. Add stable repositories from kubernetes-charts:
+		helm repo add stable https://kubernetes-charts.storage.googleapis.com
+
+2. Install grafana helm by command
+		helm install --name helmgrafana --set service.type=NodePort stable/grafana
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example Output:
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+NAME:   helmgrafana
+LAST DEPLOYED: Tue Jul 10 16:29:38 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/ServiceAccount
+NAME         SECRETS  AGE
+helmgrafana  1        0s
+
+==> v1/ClusterRole
+NAME                     AGE
+helmgrafana-clusterrole  0s
+
+==> v1beta1/Role
+helmgrafana  0s
+
+==> v1beta1/RoleBinding
+NAME         AGE
+helmgrafana  0s
+
+==> v1beta1/PodSecurityPolicy
+NAME         DATA   CAPS      SELINUX   RUNASUSER  FSGROUP   SUPGROUP  READONLYROOTFS  VOLUMES
+helmgrafana  false  RunAsAny  RunAsAny  RunAsAny   RunAsAny  false     configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+
+==> v1/Pod(related)
+NAME                          READY  STATUS             RESTARTS  AGE
+helmgrafana-54d6484f7b-gvlx6  0/1    ContainerCreating  0         0s
+
+==> v1/Secret
+NAME         TYPE    DATA  AGE
+helmgrafana  Opaque  3     0s
+
+==> v1/ConfigMap
+NAME         DATA  AGE
+helmgrafana  1     0s
+
+==> v1/ClusterRoleBinding
+NAME                            AGE
+helmgrafana-clusterrolebinding  0s
+
+==> v1/Service
+NAME         TYPE      CLUSTER-IP     EXTERNAL-IP  PORT(S)       AGE
+helmgrafana  NodePort  10.109.37.243  <none>       80:31234/TCP  0s
+
+==> v1beta2/Deployment
+NAME         DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+helmgrafana  1        1        1           0          0s
+
+
+NOTES:
+1. Get your 'admin' user password by running:
+
+   kubectl get secret --namespace default helmgrafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+2. The Grafana server can be accessed via port 80 on the following DNS name from within your cluster:
+
+   helmgrafana.default.svc.cluster.local
+
+   Get the Grafana URL to visit by running these commands in the same shell:
+  export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services helmgrafana)
+  export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+
+
+3. Login with the password from step 1 and the username: admin
+#################################################################################
+######   WARNING: Persistence is disabled!!! You will lose your data when   #####
+######            the Grafana pod is terminated.                            #####
+#################################################################################
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. Check password of admin grafana by command:
+kubectl get secret --namespace default helmgrafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+4. Check release for helm by command:
+   helm ls --all
+   watch kubectl get pods
+
+5. Check port to access by command:
+  kubectl get svc/helmgrafana
+
+6. Test access to grafana by url http://<any public ip address of node>:<port of service from No.5>
+
+7. Cleanup lab by command:
+	helm delete --purge helmgrafana

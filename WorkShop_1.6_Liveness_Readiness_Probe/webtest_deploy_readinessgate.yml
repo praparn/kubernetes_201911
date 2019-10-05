@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webtest2
+  labels:
+    name: web
+    owner: Praparn_L
+    version: "1.0"
+    module: WebServer
+    environment: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: web
+      owner: Praparn_L
+      version: "1.0"
+      module: WebServer
+      environment: development
+  template:
+    metadata:
+      labels:
+        name: web
+        owner: Praparn_L
+        version: "1.0"
+        module: WebServer
+        environment: development
+    spec:
+      readinessGates:
+      - conditionType: webtest1.kuberneteslabthailand.com/python1
+      containers:
+        - name: webtest
+          image: labdocker/cluster:webservicelite_v1.51rc
+          ports:
+          - containerPort: 5000
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /usr/src/app/main.py
+            initialDelaySeconds: 15
+            periodSeconds: 5

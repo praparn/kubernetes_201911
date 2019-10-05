@@ -1,0 +1,49 @@
+Link for download:
+1. Check LABSheet.xlsx for check information about your machine and your "docker_lab" (For MAC OS X) or "docker_lab.ppk" (For Windows)
+2. Check Document for connect to your AWS
+3. Test docker command by running: 
+    docker version
+    docker run hello-world
+    kubectl version
+
+4. Initial kubernetes by command:
+    sudo su -
+    kubeadm init --kubernetes-version=v1.15.0 --pod-network-cidr=192.168.0.0/16 
+    exit
+
+5. Setup credential for regular user by command:
+    cd ~/
+   	mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	kubectl taint nodes --all node-role.kubernetes.io/master-
+
+6. Install network component by command:
+    kubectl apply -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
+    watch kubectl get pods --all-namespaces
+
+7. Test deploy application by command:
+    kubectl run webtest --image=labdocker/nginx:http2 --port=443
+    kubectl get pods -o wide
+    kubectl expose deployment webtest --target-port=443 --type=NodePort
+    kubectl get svc -o wide                                               ==> Record Public Port
+
+8. Test access web endpoint by command:
+    https://<Public IP>:<Port>
+
+9. Clear up lab by command:
+    kubectl delete deployment/webtest
+    kubectl delete svc/webtest
+
+10. Clone workshop to aws machine by command: 
+    cd ~/
+    git clone https://github.com/praparn/kubernetes_201907.git
+
+11. Now all workshop is on "/home/ubuntu/kubernetes_201907"
+
+
+*Remark: In case you need to reinitial all this lab again please kindly following command below (*Warnning: This will reset all lab that you had been operate before)
+    sudo su -
+    kubeadm reset           ==> Answer 'y'
+    sudo rm -rf /var/lib/etcd
+    docker system prune -af  ==> Answer 'y'

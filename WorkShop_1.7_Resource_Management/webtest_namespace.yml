@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: webtest-namespace
+  labels:
+    name: webtest-namespace
+    owner: Praparn_L
+    version: "1.0"
+    module: NameSpace
+    environment: development

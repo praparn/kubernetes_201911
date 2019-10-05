@@ -1,0 +1,14 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+caCertPath: /etc/kubernetes/pki/ca.crt
+discovery:
+  bootstrapToken:
+    token: tokenid
+    apiServerEndpoint: hostnamemaster:6443
+    caCertHashes:
+      - "sha256:cahash"
+  timeout: 5m0s
+kind: JoinConfiguration
+nodeRegistration:
+  name: hostnameworker
+  kubeletExtraArgs:
+    cloud-provider: aws

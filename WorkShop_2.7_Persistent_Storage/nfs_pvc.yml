@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-share-pvc
+  labels:
+    name: nfs-share-pvc
+    owner: Praparn_L
+    version: "1.0"
+    module: PVC
+    environment: development
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 500Mi
+    limits:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      name: nfs-share-pv
+      owner: Praparn_L
+      version: "1.0"
+      module: PV
+      environment: development
