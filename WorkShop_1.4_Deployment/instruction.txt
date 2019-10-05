@@ -6,12 +6,12 @@ Note: This instruction will demonstrate about how to use Deployment/RS for deplo
 2. Check File on WorkShop
 
 3. Create Deployment and check status by command:
-	kubectl create -f webtest_deploy.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record)
+	kubectl create -f webtest_deploy.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record)
 	kubectl get deployment
 	kubectl get pods --show-labels
 
 4. Create Service and check status by command:
-	kubectl create -f webtest_svc.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_svc.yml --record)
+	kubectl create -f webtest_svc.yml --record (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.4_Deployment/webtest_svc.yml --record)
 	kubectl get svc
 	---------------------------------------------------
 	Example: Port mapping outside on TCP:32500
@@ -71,7 +71,7 @@ Note: This instruction will demonstrate about how to use Deployment/RS for deplo
 	---------------------------------------------------
 	deployment.extensions/webtest 
 	REVISION  CHANGE-CAUSE
-	1         kubectl create --filename=https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record=true
+	1         kubectl create --filename=https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.4_Deployment/webtest_deploy.yml --record=true
 	2         kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.51rc --record=true
 	3         kubectl set image deployment/webtest webtest=labdocker/cluster:webservicelite_v1.8ga --record=true
 	---------------------------------------------------
@@ -85,5 +85,5 @@ Note: This instruction will demonstrate about how to use Deployment/RS for deplo
 			open browser for test can operate: http://<Public IP>:32500
 
 20. Cleanup Lab by command:
-	kubectl delete -f webtest_deploy.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_deploy.yml)
-	kubectl delete -f webtest_svc.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.4_Deployment/webtest_svc.yml)
+	kubectl delete -f webtest_deploy.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.4_Deployment/webtest_deploy.yml)
+	kubectl delete -f webtest_svc.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.4_Deployment/webtest_svc.yml)

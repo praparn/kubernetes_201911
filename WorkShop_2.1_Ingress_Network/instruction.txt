@@ -3,9 +3,9 @@ Note: This instruction will start lab for kubernetes for ingress workshop
 --------------------------------------------------------------------------
 0. (Master) Create ingress set:
 	0.1 Create mandatory resource by command: 
-	kubectl apply -f ~/kubernetes_201907/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 	*Remark: If you need to modified config. Edit this file first
-	vi ~/kubernetes_201907/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	vi ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 ========================================
 Example:
 [...]
@@ -21,7 +21,7 @@ metadata:
 [...]
 ========================================
 	0.2 Create service with NodePort by command: 
-	kubectl apply -f ~/kubernetes_201907/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/baremetal/service-nodeport.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/baremetal/service-nodeport.yaml
 	kubectl get svc -n=ingress-nginx				==> Record Port No for Create LoadBalancer (*Important)
 	kubectl get pods -n=ingress-nginx			
 
@@ -35,8 +35,8 @@ ingress-nginx   NodePort   10.96.228.199   <none>        80:32037/TCP,443:32119/
 		http://<public ip>:<Port of http(80)>
 
 1. Create Service/Pods/Deployment for webtest1 and webtest2 by command:
-	kubectl create -f webtest_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml )
-	kubectl create -f webtest_deploy2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml )
+	kubectl create -f webtest_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml )
+	kubectl create -f webtest_deploy2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml )
 
 2. View service for connection by command:
 	kubectl get svc -o wide
@@ -57,7 +57,7 @@ _L,version=1.0
 	curl http://<ip of webtest2> or curl http://webtest2
 
 4. Create ingress for access by command:
-	kubectl create -f ingress_webtest.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml )
+	kubectl create -f ingress_webtest.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml )
 	kubectl get ing -o wide
 	kubectl describe ing/ingresswebtest
 
@@ -80,14 +80,14 @@ _L,version=1.0
 	http://webtest2.kuberneteslabthailand.com:<Port from Record>
 
 8. Delete Existing Ingress by command:
-	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml)
+	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml)
 
 9. Create TLS Secret by command:
-	kubectl create -f ingress_webtest_tls_secret_webtest1.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml )
-	kubectl create -f ingress_webtest_tls_secret_webtest2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml )
+	kubectl create -f ingress_webtest_tls_secret_webtest1.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml )
+	kubectl create -f ingress_webtest_tls_secret_webtest2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml )
 
 10. Create ingress for TLS by command:
-	kubectl create -f ingress_webtest_tls.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls.yml )
+	kubectl create -f ingress_webtest_tls.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls.yml )
 	kubectl get ing/ingresswebtesttls -o wide
 	kubectl describe ing/ingresswebtesttls
 
@@ -101,9 +101,9 @@ _L,version=1.0
 
 
 12. Clean Up Lab:
-	kubectl delete -f ingress_webtest_tls.yml	 (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls.yml)
-	kubectl delete -f ingress_webtest_tls_secret_webtest1.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml)
-	kubectl delete -f ingress_webtest_tls_secret_webtest2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml)
-	kubectl delete -f webtest_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml)
-	kubectl delete -f webtest_deploy2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml)
+	kubectl delete -f ingress_webtest_tls.yml	 (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls.yml)
+	kubectl delete -f ingress_webtest_tls_secret_webtest1.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml)
+	kubectl delete -f ingress_webtest_tls_secret_webtest2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml)
+	kubectl delete -f webtest_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml)
+	kubectl delete -f webtest_deploy2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml)
 	kubectl delete deployment/curl

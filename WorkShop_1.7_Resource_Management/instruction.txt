@@ -4,7 +4,7 @@ Note: This instruction will demonstrate about how to manage resouce in cluster w
 Part0: Create Dashboard and Metric Server
 ====================================================
 1. Create Dashboard by command:
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/dashboard.yml
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard.yml
 
 	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
 
@@ -15,8 +15,8 @@ Part1: Container level configuration:
 1. Get command prompt for access folder workshop 1.7 by command :cd /xxxx/WorkShop_1.7_Resource_Management_and_HPA
 2. Check file on WorkShop
 3. Create Pods/Cadvisor by command:
-	kubectl create -f webtest_pod.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_pod.yml )
-	kubectl create -f cadvisor_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml )
+	kubectl create -f webtest_pod.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_pod.yml )
+	kubectl create -f cadvisor_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml )
 	kubectl get pods --show-labels
 
 4. Open another shell for access minikube vm by command:
@@ -49,7 +49,7 @@ Part1: Container level configuration:
 	kubectl describe node
 
 10. Cancel all work load and Delete Pods by command:
-	kubectl delete -f webtest_pod.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_pod.yml)
+	kubectl delete -f webtest_pod.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_pod.yml)
 
 
 ====================================================
@@ -57,14 +57,14 @@ Part 2: Name space level configuration:
 ====================================================
 
 1. Create Namespace by command:
-	kubectl create -f webtest_namespace.yml (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)
+	kubectl create -f webtest_namespace.yml (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)
 
 2. Create Quota and attach to Namespace and view describe by command:
-	kubectl create -f webtest_quota.yml  --namespace=webtest-namespace (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_quota.yml  --namespace=webtest-namespace)
+	kubectl create -f webtest_quota.yml  --namespace=webtest-namespace (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_quota.yml  --namespace=webtest-namespace)
 	kubectl describe namespace/webtest-namespace
 
 3. Try to create deployment by command:
-	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
+	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
 
 4. Check completeness of deployment/rs/pods/svc by command:
 	kubectl get deployment/webtest --namespace=webtest-namespace
@@ -77,12 +77,12 @@ Part 2: Name space level configuration:
 	kubectl describe rs --namespace=webtest-namespace
 
 6. Create LimitRange attach to Namespace and view descibe by command:
-	kubectl create -f webtest_limit.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_limit.yml  --namespace=webtest-namespace)
+	kubectl create -f webtest_limit.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_limit.yml  --namespace=webtest-namespace)
 	kubectl describe namespace/webtest-namespace
 
 7. Recreate Deployment by command:
-	kubectl delete -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml  --namespace=webtest-namespace)
-	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
+	kubectl delete -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml  --namespace=webtest-namespace)
+	kubectl create -f webtest_deploy.yml  --namespace=webtest-namespace	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml   --namespace=webtest-namespace)
 
 8. Check completeness of deployment/rs/pods/svc by command:
 	kubectl get deployment/webtest --namespace=webtest-namespace
@@ -106,6 +106,6 @@ kubectl get pods --namespace=webtest-namespace
 kubectl describe pods <pods name> --namespace=webtest-namespace
 
 12. Clean up lab by command:
-	kubectl delete -f webtest_deploy.yml --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml --namespace=webtest-namespace)
-	kubectl delete -f cadvisor_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml)
-	kubectl delete -f webtest_namespace.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)
+	kubectl delete -f webtest_deploy.yml --namespace=webtest-namespace	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml --namespace=webtest-namespace)
+	kubectl delete -f cadvisor_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/cadvisor_deploy.yml)
+	kubectl delete -f webtest_namespace.yml (In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_namespace.yml)

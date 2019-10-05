@@ -8,7 +8,7 @@ Link for download:
 
 4. Initial kubernetes by command:
     sudo su -
-    kubeadm init --kubernetes-version=v1.15.0 --pod-network-cidr=192.168.0.0/16 
+    kubeadm init --kubernetes-version=v1.16.0 --pod-network-cidr=192.168.0.0/16 
     exit
 
 5. Setup credential for regular user by command:
@@ -19,7 +19,7 @@ Link for download:
 	kubectl taint nodes --all node-role.kubernetes.io/master-
 
 6. Install network component by command:
-    kubectl apply -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
+    kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
     watch kubectl get pods --all-namespaces
 
 7. Test deploy application by command:
@@ -37,9 +37,9 @@ Link for download:
 
 10. Clone workshop to aws machine by command: 
     cd ~/
-    git clone https://github.com/praparn/kubernetes_201907.git
+    git clone https://github.com/praparn/kubernetes_201911.git
 
-11. Now all workshop is on "/home/ubuntu/kubernetes_201907"
+11. Now all workshop is on "/home/ubuntu/kubernetes_201911"
 
 
 *Remark: In case you need to reinitial all this lab again please kindly following command below (*Warnning: This will reset all lab that you had been operate before)

@@ -12,7 +12,7 @@ Training_DockerZerotoHero_StudentGX_3   			NodePort					10.0.1.X								X.X.X.X	
 Part 1: Create Storage Class and Test Provision Disk
 ===================================================
 1. (Master) Create "Storage Class" for AWS and check by command:
-kubectl apply -f ~/kubernetes_201907/WorkShop_2.7_Persistent_Storage/aws_sc.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_sc.yml)
+kubectl apply -f ~/kubernetes_201911/WorkShop_2.7_Persistent_Storage/aws_sc.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_sc.yml)
 
 2. (Master) Check existing "Persistant Volume (PV)" and "Persistent Volume Claim (PVC)" by command:
 kubectl describe sc/aws-ebs
@@ -20,7 +20,7 @@ kubectl get pv
 kubectl get pvc
 
 3. (Master) Test create dynamic provision disk from "Persistent Volume Claim (PVC)" from "Storage Class" by command:
-kubectl create -f ~/kubernetes_201907/WorkShop_2.7_Persistent_Storage/aws_pvc.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml)
+kubectl create -f ~/kubernetes_201911/WorkShop_2.7_Persistent_Storage/aws_pvc.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml)
 watch kubectl get pvc         ==> Take around 1 - 2 min
 ===================================================
 Example Result:
@@ -44,8 +44,8 @@ Part 2: Integrate with Persistency Volume (PV),  and Persistency Volume Claim (P
 ===================================================
 
 1. (Master) Create deployment,service with mount disk by command:
-kubectl create -f ~/kubernetes_201907/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml)
-kubectl create -f aws_webtest_svc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_webtest_svc.yml)
+kubectl create -f ~/kubernetes_201911/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml)
+kubectl create -f aws_webtest_svc.yml   (In case run via github : kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_webtest_svc.yml)
 
 2. (Master) Check Deployment by command:
 kubectl get deployment
@@ -64,7 +64,7 @@ df -h
 http://<any public ip>:32500
 
 6. (Master) Clean Up file and deployment by command:
-    kubectl delete -f aws_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml)
-    kubectl delete -f aws_webtest_svc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_webtest_svc.yml)
-    kubectl delete -f ~/kubernetes_201907/WorkShop_2.7_Persistent_Storage/aws_pvc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml)
-    kubectl delete -f ~/kubernetes_201907/WorkShop_2.7_Persistent_Storage/aws_sc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.7_Persistent_Storage/aws_sc.yml)
+    kubectl delete -f aws_webtest_deploy.yml    (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_webtest_deployall.yml)
+    kubectl delete -f aws_webtest_svc.yml   (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_webtest_svc.yml)
+    kubectl delete -f ~/kubernetes_201911/WorkShop_2.7_Persistent_Storage/aws_pvc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml)
+    kubectl delete -f ~/kubernetes_201911/WorkShop_2.7_Persistent_Storage/aws_sc.yml (In case run via github : kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_sc.yml)
