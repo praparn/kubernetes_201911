@@ -61,9 +61,8 @@ kubectl get jobs --all-namespaces | sed '1d' | awk '{ print $2}'| while read lin
 
 9. Create Job by command: (Monitor 5 min)
 	kubectl create -f job_notify_cron.yml 
-	watch kubectl get cronjob -o wide
-  kubectl get job -o wide
-	kubectl get pods -o wide
+	kubectl get cronjob -o wide
+  kubectl get jobs --watch
 
   ****After Complete Pods will gone. We can view all complete by command***
   kubectl get pods -o wide

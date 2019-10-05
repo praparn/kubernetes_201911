@@ -9,7 +9,7 @@ metadata:
     module: Job
     environment: development
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
