@@ -5,9 +5,22 @@ Part0: Create Dashboard
 ====================================================
 1. Create Dashboard by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard.yml
+
+2. Check Bearer Token for access by command:
+kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}') | grep ^token: | sed 's/token:[ ]*/Token:\n/'
+
+	kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+	*Remark: Record Token:
+	Ex:
+	------------------------------------------------------------------------------------
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXR6c2tzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1MGI4NDA0YS1hNWMyLTRlNjMtYmUyZS00M2UyYjk4MjIzODUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.k5_eAm6oLNykUxNVvfqnWDoriqo-J3rkzTZgDZ4BJLApgKeX-nKu4Y4eD96Yno1AP6mdX6lYehWOhAchtcBIH4SVkJiN2LzEoJAB1tddNeOFoIDFoh-NnjMZYIVq2jq1QEMRIdelVS3baFshHaRIH0aBQD4okByhbHYpPCVXC9DUiG20MgNk_e0euuNDyHo8WyEKbCNYZqFuWWDmsaN7gloH8fj2_HR96CygSKQLbKBaEefyYsLtiZBNyVds1pF2OCDmUgo72wVt4msCZAjE90GjWX2Rgk-ltp_zYReMs41aBf0H6MzkL16CDrQwMMzgF9iQpc8NwSv8OCYJs9No0A
+	------------------------------------------------------------------------------------
+
+3. Open Kubernetes's proxy for operate:
 	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
 
-	*Test by open browser: http://<Public IP>:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/   
+	*Test by open browser: 
+	http://<Public IP>:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 ====================================================
 Part1: Container level configuration:
 ====================================================
