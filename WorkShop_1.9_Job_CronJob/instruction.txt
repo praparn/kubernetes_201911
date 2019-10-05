@@ -66,9 +66,9 @@ kubectl get jobs --all-namespaces | sed '1d' | awk '{ print $2}'| while read lin
 
 
 10. Check Detail of Job by command:
-	kubectl describe jobs/<job name>
+	kubectl describe cronjob/linenotify
 
 11. Monitor Result on LINE Application:
 
-12. Delete Job by command:
-kubectl get jobs --all-namespaces | sed '1d' | awk '{ print $2}'| while read line; do kubectl delete jobs $line; done
+12. Delete Cronjob by command:
+kubectl delete -f job_notify_cron.yml 
