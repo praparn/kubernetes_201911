@@ -5,7 +5,6 @@ Part0: Create Dashboard
 ====================================================
 1. Create Dashboard by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard.yml
-
 	kubectl proxy --address='<Private IP>' --accept-hosts='^*$'
 
 	*Test by open browser: http://<Public IP>:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/   
