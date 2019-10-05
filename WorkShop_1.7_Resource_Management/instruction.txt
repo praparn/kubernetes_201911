@@ -6,14 +6,15 @@ Part0: Create Dashboard
 1. Create Dashboard by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/dashboard.yml
 
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/user.yml
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/user-restrict.yml
 
 2. Check Bearer Token for access by command:
 	kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
 	*Remark: Record Token:
 	Ex:
 	------------------------------------------------------------------------------------
-eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXE1bW5kIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI5ZTY4N2ZiZS0wNmI4LTQxMGMtOGU1NS02MWQ4NGUzZmE2MTYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.W-sv19O6XUZILjhZf86l5XHXC0rkFCxFGDQjiUoabymPnz27lqmLP13AQ2kvCNvJyF3umhb0t6_aXuQFewNzXKLd_cQMhrVgJw3sUJQk5QDlHMEcP2GKtn3RO79FA4uEdDBgD-aNYzUbbWs9OsBswL1UwlSmBQohpEaMPUUZxgcA1qpqfGx_WjkrhqpEmjd61rYCv5iSBxIjI8_fYpUE_NSbVKeBa7KQkqnGDg7HU5NGujf5X6LubXlJ3gyZIH-aTmQEHU7rJFW8Wmvmf_b8TqhqwNUAFaHpYUQgmDVrkgj6tvMJnrvr9f_dDWwiAfspR8RI5Tu7JuEkfWJ3ekny5w
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXdzc2xsIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI4MTk3Yjg2YS1mMjJiLTRlMmEtYjQ2Mi01NDZlNmY5ZDhhMTQiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.mXqz5IYpkPUqA_eAjuKalk47GTmsfO_bOpoigpfF2ALqSz5nAWEOCsC4WLUKTAZhN4kxO52RkdACZzPx_ndzoEbzJIIr4pBEJ_rbesHEfEO0IU2FJEHhWwH5kHdaRIstWdZcoJl03hO7PlKYanH1_mpHWFms7tHaUoZFk5J2IZW2n_VKjGd8715qYy_d3eYrV_Mp-mb-AKXV6Z_hsmhte56AVtbmhMGkbn1bHB9sFj9YLRxwPtCGBOsNNSRHY1QyKuqJ3nmVBqmyQLO5j_Kn4DAqgfgeBq_-Wx7Dxq04Kz7MFdEn1EGhGyBotgEigqRizxb5msDXRNkBEo6Ry7dutw
+
 	------------------------------------------------------------------------------------
 
 3. Open Kubernetes's proxy for operate:
