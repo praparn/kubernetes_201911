@@ -3,9 +3,9 @@ Note: This instruction will start lab for kubernetes for ingress workshop
 --------------------------------------------------------------------------
 0. (Master) Create ingress set:
 	0.1 Create mandatory resource by command: 
-	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 	*Remark: If you need to modified config. Edit this file first
-	vi ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	vi ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 ========================================
 Example:
 [...]
@@ -21,7 +21,7 @@ metadata:
 [...]
 ========================================
 	0.2 Create service with NodePort by command: 
-	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/baremetal/service-nodeport.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/baremetal/service-nodeport.yaml
 	kubectl get svc -n=ingress-nginx				==> Record Port No for Create LoadBalancer (*Important)
 	kubectl get pods -n=ingress-nginx			
 
