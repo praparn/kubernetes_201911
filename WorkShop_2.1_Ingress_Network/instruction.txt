@@ -71,13 +71,13 @@ _L,version=1.0
 	For Mac:
 	echo "<Public IP> webtest1.kuberneteslabthailand.com webtest2.kuberneteslabthailand.com" | sudo tee -a /private/etc/hosts
 
-	*Remark for MAC: for case you don't prefer for add hosts please kindly use curl instead:
-	curl http://<Public IP>:<Port of http(80)> -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl http://<Public IP>:<Port of http(80) -H 'Host:webtest2.kuberneteslabthailand.com'
-
-7. Test access website by command or browser:
+7. Test access website by browser:
 	http://webtest1.kuberneteslabthailand.com:<Port from Record>
 	http://webtest2.kuberneteslabthailand.com:<Port from Record>
+
+	*Remark: We can test with curl in lab machine by command:
+	curl http://<Public IP>:<Port of http(80)> -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:<Port of http(80) -H 'Host:webtest2.kuberneteslabthailand.com'
 
 8. Delete Existing Ingress by command:
 	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/ingress_webtest.yml)
@@ -95,7 +95,7 @@ _L,version=1.0
 	https://webtest1.kuberneteslabthailand.com:<Port of https(443)>
 	https://webtest2.kuberneteslabthailand.com:<Port of https(443)>
 
-	*Remark for MAC: for case you don't prefer for add hosts please kindly use curl instead:
+	*Remark: We can test with curl in lab machine by command:
 	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest1.kuberneteslabthailand.com'
 	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest2.kuberneteslabthailand.com'
 
