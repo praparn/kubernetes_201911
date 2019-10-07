@@ -11,10 +11,11 @@ metadata:
   name: management-ui 
   namespace: management-ui 
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 80 
     targetPort: 9001
+    nodePort: 32500
   selector:
     role: management-ui 
 ---
@@ -32,7 +33,7 @@ spec:
     spec:
       containers:
       - name: management-ui 
-        image: calico/star-collect:v0.1.0
+        image: labdocker/star-collect:v0.1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 9001
