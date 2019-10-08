@@ -16,7 +16,7 @@ Part 1: Network Policy
 	kubectl get all -n=client
 
 3. Test open browser for check application:
-	http://<Publi IP>:32500
+	http://<Public IP>:32500
 
 4. Apply network policy for denied any connection to namespace: "stars" and "client"
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-deny-client.yml
@@ -43,6 +43,11 @@ Part 1: Network Policy
 11. Test open browser again:
 	http://<Publi IP>:32500
 
+12. CleanUp Lab by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/management-ui-set.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/backend-set.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
 ============================================================================================================================================================
 Part 2: Pods Security Policy
 ============================================================================================================================================================
