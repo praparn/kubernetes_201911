@@ -1,8 +1,26 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
+  namespace: client
+  name: client-policy-egress
+spec:
+  podSelector:
+    matchLabels:
+      role: client
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              role: stars
+      ports:
+        - protocol: TCP
+          port: 80
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
   namespace: stars
-  name: frontend-policy
+  name: frontend-policy-ingress
 spec:
   podSelector:
     matchLabels:
