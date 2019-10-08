@@ -2,24 +2,6 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   namespace: stars
-  name: frontend-policy-egress
-spec:
-  podSelector:
-    matchLabels:
-      role: frontend
-  egress:
-    - to:
-        - podSelector:
-            matchLabels:
-              role: backend
-      ports:
-        - protocol: TCP
-          port: 6379
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  namespace: stars
   name: backend-policy-ingress
 spec:
   podSelector:
