@@ -4,10 +4,10 @@ Note: This instruction will start lab for kubernetes's cluster for real workshop
 Part 1: Network Policy
 ============================================================================================================================================================
 1. Create Application Set by command:
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/management-ui-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/backend-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/management-ui-set.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/backend-set.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
 
 2. Check Namespace / Service / Pods 
 	kubectl get namespace
@@ -19,26 +19,26 @@ Part 1: Network Policy
 	http://<Public IP>:32500
 
 4. Apply network policy for denied any connection to namespace: "stars" and "client"
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-deny-client.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-deny-stars.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-deny-client.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-deny-stars.yml
 
 5. Test open browser again:
 	http://<Publi IP>:32500
 
 6. Apply network policy for allow all pods from namespace "management-ui" (label: role=management-ui) access to any pods in namespace "stars"
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-ui.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-ui.yml
 
 7. Apply network policy for allow all pods from namespace "management-ui" (label: role=management-ui) access to any pods in namespace "client"
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-ui-client.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-ui-client.yml
 
 8. Test open browser again:
 	http://<Publi IP>:32500
 
 9. Apply network policy for allow pods frontend (label: role=frontend) to pods backend (label: role=backend) in same namespace
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-backend.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-backend.yml
 
 10. Apply network policy for allow all pods from namespace "client" (label: role=client) access to pods frontend (label: role=frontend)
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-frontend.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-allow-frontend.yml
 
 11. Test open browser again:
 	http://<Publi IP>:32500
@@ -48,11 +48,35 @@ Part 1: Network Policy
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/backend-set.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
+
 ============================================================================================================================================================
 Part 2: Pods Security Policy
 ============================================================================================================================================================
-1. Create Application Set by command:
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/management-ui-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/backend-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
+1. Create namespace "security: and running pods with mount hostpath "/var/lib/docker" within pods on path "/temp"
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
+
+2. Access in to pods and test some activity:
+	kubectl exec -it webtest -n=secuirty
+	ping 1.1.1.1
+	apk update
+	apk add curl
+	sudo su - ==> Escalate to Root
+	curl https://www.google.com
+	touch /tmp/testcreatefile1
+	touch /home/testcreatefile2
+	touch /etc/testcreatefile3
+	touch /proc/testcreatefile4
+	cp /tmp/testcreatefile /proc/testprohibitfile
+	ls -hl /proc | grep test
+
+3. Install Apparmor for Apply Restrict Policy and Check Apparmor Profile
+	sudo apparmor_parser -r -W ~/kubernetes_201911/master/WorkShop_2.2_Security/restrict-apparmor_parser
+	sudo aa-status
+
+4. Delete pods by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
+
+4. Apply Pods Security for 
+
+

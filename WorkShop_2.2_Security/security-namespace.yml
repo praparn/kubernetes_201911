@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security
+  labels:
+    name: security
+    owner: Praparn_L
+    version: "1.0"
+    module: NameSpace
+    environment: development
