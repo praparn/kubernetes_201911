@@ -1,7 +1,7 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: restricted
+  name: allowed
   namespace: security
   annotations:
     apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default,localhost/restrict-apparmor'
