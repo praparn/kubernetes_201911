@@ -84,6 +84,7 @@ Part 2: Pods Security Policy
 6. Apply Restrict Policy on Namespaces by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-policy-restrict.yml
 	kubectl get psp -n=security
+	kubectl describe psp/restricted -n=security
 	
 4. Apply Pods Security for 
 
