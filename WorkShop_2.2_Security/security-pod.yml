@@ -4,7 +4,7 @@ metadata:
   name: webtest
   namespace: security
   labels:
-    name: web
+    name: webtest
     owner: Praparn_L
     version: "1.0"
     module: WebServer

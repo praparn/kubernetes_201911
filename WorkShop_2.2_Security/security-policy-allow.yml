@@ -17,6 +17,7 @@ spec:
     - 'secret'
     - 'downwardAPI'
     - 'persistentVolumeClaim'
+    - 'hostPath'
   hostNetwork: false
   hostIPC: false
   hostPID: false
@@ -35,6 +36,6 @@ spec:
       - min: 1
         max: 65535
   hostPorts:
-    - min: 0
-    - max: 0
+    - min: 32500
+    - max: 32500
   readOnlyRootFilesystem: false
