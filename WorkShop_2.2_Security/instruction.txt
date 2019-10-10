@@ -73,13 +73,16 @@ Part 2: Pods Security Policy
 3. Test Access Web from browser or curl:
 	http://<Public IP>:32500
 
-3. Install Apparmor for Apply Restrict Policy and Check Apparmor Profile
+4. Install Apparmor for Apply Restrict Policy and Check Apparmor Profile
 	sudo apparmor_parser -r -W ~/kubernetes_201911/WorkShop_2.2_Security/restrict-apparmor
 	sudo aa-status
 
-4. Delete pods by command:
+5. Delete pods by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
+
+6. Apply Restrict Policy on Namespaces by command:
+	
 4. Apply Pods Security for 
 
 
