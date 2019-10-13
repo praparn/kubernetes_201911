@@ -112,7 +112,7 @@ Part 3: Access Control Policy (System Account)
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
 kubectl get sa -n=security
 
-2. Create ClusterRole and ClusterRole Binding by command:
+2. Create RoleBinding by command:
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
 kubectl get clusterrole |grep clusterrolereadonly
 kubectl get rolebinding -n=security
@@ -149,5 +149,6 @@ kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/ma
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-role-readonly.yml
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
-
-
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
