@@ -109,6 +109,8 @@ kubectl get sa
 2. Create ClusterRole and ClusterRole Binding by command:
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-clusterrole-readonly.yml
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
+kubectl get clusterrole |grep clusterrolereadonly
+kubectl get clusterrolebinding |grep rolebindingserviceaccountreadonly
 
 3. Get secret of service account by command:
 kubectl get secrets		==> Check secret for user "serviceaccount-readonly"
