@@ -120,7 +120,7 @@ kubectl get clusterrole |grep clusterrolereadonly
 kubectl get clusterrolebinding |grep rolebindingserviceaccountreadonly
 
 3. Get secret of service account by command:
-kubectl get secrets	-n=security	==> Check secret for user "serviceaccount-readonly"
+kubectl get secrets -n=security	==> Check secret for user "serviceaccount-readonly"
 kubectl describe secret/serviceaccount-readonly-token-xxxxx -n=security	==> Record for token
 -----
 example:
@@ -128,16 +128,28 @@ Data
 ====
 ca.crt:     1025 bytes
 namespace:  7 bytes
-token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6InNlcnZpY2VhY2NvdW50LXJlYWRvbmx5LXRva2VuLWw2amdzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InNlcnZpY2VhY2NvdW50LXJlYWRvbmx5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTE4ZjQxZDUtNDJiYi00NDQwLWE4ZTAtMjA5NjMxNzVkMjMxIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6c2VydmljZWFjY291bnQtcmVhZG9ubHkifQ.o8jy-pPfvA8IVSiJr6ohuzv0JtxI-s4VCNxwMmsSiq72vp6D8qQ8MxCQ9Ommzx-bURD7fIyoOCS8JtpC0Mq6xGI9XKBT0Qadjj6LJlLS6NKgCGB_DAwxreZQcPvfS-xUVlJO_xzz5ckhDMW9umClOflhAkWdTd__sZWq6cbnObCJ49E9dbmKxzKHHro6z77zUlAQMq6p52ikqTeYCrtp2ETv-5go1ly09_8oB1pnhVuCEPkQJbgkm4PibIOZp43Jq81-7XgmjdLcuFJDfVQcUyNAi_v6JLL22ZSDMbE5XSJ-d0IFPHMR4tTZvFCxAGwcM773nM6eKn2LdKa9dZBVXw
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJzZWN1cml0eSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzZXJ2aWNlYWNjb3VudC1yZWFkb25seS10b2tlbi1qY2MybiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJzZXJ2aWNlYWNjb3VudC1yZWFkb25seSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjUxZjJlYzRhLWY5MTUtNDA2ZS05ZjgwLTBjMWZmZGNiYmVlMSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpzZWN1cml0eTpzZXJ2aWNlYWNjb3VudC1yZWFkb25seSJ9.JxA5_EyZDGKY6D-CMqU4sKMa-7KUwhPAWup4Lbc8IU6Az9mSumtc0TvDZ2-6CGtbdoQEtoCLhbWhMU-GosQU3fg6CCOlf8xqgJ72pjPOdvtw3x6PNGDSEQwiz8kukgWHFqa2w5jMQ5uHlbmCF30J6q6LnkQx_LLoeqmA9v8hM7BAz-Q8GCCPDjKU1ey7ER-5zD9yHtn1QS8pf1WFG8fPsw-0d4ToATzggVDQrKFFoi5dC5uWsUCeqkDk8Cl-SbhNE3WvXASTaVIDnOYlQ9s31D7Kzh9Nf_YM31R26QRegp3i4_BXgQ-mrEe2cVqipmZkm3hnYxTDBNpYj9bFNvIvZA
 -----
 
 4. Create pods for service account by command:
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
 kubectl get pods -n=security
 
-5. Access to pods with command:
+5. Access to pods, install curl and export TOKEN with command:
 kubectl exec -it serviceaccount sh -n=security
+apk update && apk add --update curl
+export TOKEN=<TOKEN>
+
+6. Test curl for access kubernetes's service by command:
+curl -H “Authorization: Bearer $TOKEN” https://kubernetes.default/api/v1/ --insecure
+
+curl -H “Authorization: Bearer $TOKEN” https://kubernetes.default/api/v1/namespaces/default/pods/ --insecure
 
 
+7. Clearup Lab by command:
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-clusterrole-readonly.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
 
 
