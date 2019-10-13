@@ -40,7 +40,7 @@ etcd:
     dataDir: /var/lib/etcd
 imageRepository: k8s.gcr.io
 kind: ClusterConfiguration
-kubernetesVersion: v1.15.0
+kubernetesVersion: v1.16.0
 networking:
   dnsDomain: cluster.local
   podSubnet: 192.168.0.0/16 
@@ -48,3 +48,4 @@ networking:
 scheduler:
   extraArgs:
     address: 0.0.0.0
+    enable-admission-plugins: NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota,PodSecurityPolicy

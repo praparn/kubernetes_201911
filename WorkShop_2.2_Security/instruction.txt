@@ -118,40 +118,17 @@ kubectl create rolebinding rolebindingserviceaccountreadonly \
   --serviceaccount=security:serviceaccount-readonly \
   --namespace=security
 
-kubectl get rolebinding -n=security
+3. Test Service Account by command:
+kubectl get pods -n security --as system:serviceaccount:security:serviceaccount-readonly
+kubectl get deployment -n security --as system:serviceaccount:security:serviceaccount-readonly
+kubectl get rs -n security --as system:serviceaccount:security:serviceaccount-readonly
+kubectl get svc -n security --as system:serviceaccount:security:serviceaccount-readonly
+kubectl run webtest --image=labdocker/nginx:http2 --port=443 -n security --as system:serviceaccount:security:serviceaccount-readonly
 
-3. Get secret of service account by command:
-kubectl get secrets -n=security	==> Check secret for user "serviceaccount-readonly"
-kubectl describe secret/serviceaccount-readonly-token-xxxxx -n=security	==> Record for token
------
-example:
-Data
-====
-ca.crt:     1025 bytes
-namespace:  7 bytes
-token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJzZWN1cml0eSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJzZXJ2aWNlYWNjb3VudC1yZWFkb25seS10b2tlbi1saHFzZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJzZXJ2aWNlYWNjb3VudC1yZWFkb25seSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjQ0ZTMzMWYzLTVmOWEtNDY4Mi1iMzdjLWU3MGJlZjg0Mzc4YyIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpzZWN1cml0eTpzZXJ2aWNlYWNjb3VudC1yZWFkb25seSJ9.7Y5Wt_5_NrD5DyWHKvdmsJRza-qRjo87BLqN-IeMg1ybWj-exvWhe4b7uymyPPG5JTr_CTli11-Ei7c-7kjPmGUoCqehcZRpv1dp6QLlQA411PVID0T85dvgXVNgd09MalbuqSJjUSbbqULyRnNtMtFnVThyzFAHTPQ6X-j6V2_qEWNXVKc4oDy-6UAVpgFKZ9SnT3risaQDDtf56BUUyPb9PrG9r85mDONkcpjMyPvNPGSLrL9-X9hUfmjQj9ejl5CXsz7-UYIxdSVx-FwhFpITORA0esKMaS7dFNy0NovfHKDqZB7OYRzJk0tzmkT9Yies9LadELhxfjHa07aO9g
------
-
-4. Create pods for service account by command:
-kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
-kubectl get pods -n=security
-
-5. Access to pods, install curl and export TOKEN with command:
-kubectl exec -it serviceaccount sh -n=security
-apk update && apk add --update curl
-export TOKEN=<TOKEN>
-
-6. Test curl for access kubernetes's service by command:
-curl https://kubernetes.default/api/v1/ --insecure -H 'Authorization: Bearer $TOKEN'
-
-curl -H 'Authorization: Bearer $TOKEN' https://kubernetes.default/api/v1/namespaces/security/pods/ --insecure 
-
-
-7. Clearup Lab by command:
-kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
-kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
-kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-role-readonly.yml
+4. Clearup Lab by command:
+kubectl delete rolebinding/rolebindingserviceaccountreadonly -n=security
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
-kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-role-readonly.yml
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
 kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
