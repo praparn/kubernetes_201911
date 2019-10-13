@@ -1,16 +1,9 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: templateclusterrole
-rules:
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   labels:
-  name: test-read-only
-  namespace: default
+  name: clusterrolereadonly
 rules:
 - apiGroups: ["", "apps", "extensions"]
   resources: ["*"]

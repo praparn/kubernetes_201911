@@ -58,33 +58,67 @@ Part 2: Access Control Policy (User Account)
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
-	kubectl get pod,svc -n=sec
-	
+	kubectl get pod,svc -n=security
+	curl http://<Private IP>:32500
 
-
-1. Create private key for new user account
+2. Configure Openssl and Create private key for new user account
 cd ~
+sudo sed -i '/RANDFILE/d' /etc/ssl/openssl.cnf
 openssl genrsa -out labreadonly.key 2048
 
-2. Create CSR from private key (User: labreadonly, OU: labdockerthailand)
+3. Create CSR from private key (User: labreadonly, OU: labdockerthailand)
 openssl req -new -key labreadonly.key -out labreadonly.csr -subj "/CN=labreadonly/O=labdockerthailand"
 
-3. Generate Certificate base on CSR with aging 365 days
-openssl x509 -req -in labreadonly.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out labreadonly.crt -days 365
 
-4. Private key and Public key will place on /home/ubuntu (~)
+4. Generate Certificate base on CSR with aging 365 days
+sudo openssl x509 -req -in labreadonly.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out labreadonly.crt -days 365
+
+5. Private key and Public key will place on /home/ubuntu (~)
+ls ~/labreadonly*
 
 5. Setup credential context via kubectl by command:
-kubectl config set-credentials labreadonly --client-certificate=~/labreadonly.crt  --client-key=~/labreadonly.key
-kubectl config set-context labreadonly-context --cluster=kubernetes --namespace=security --user=employee
+cd ~
+cp ~/.kube/config ~/.kube/config_backup
+kubectl config set-credentials labreadonly --client-certificate=/home/ubuntu/labreadonly.crt  --client-key=/home/ubuntu/labreadonly.key
+kubectl config set-context labreadonly-context --cluster=kubernetes --namespace=security --user=labreadonly
 
-6. Test use credential for operate by command: (Expect: Access Denied)
+6. Test use credential for operate by command: (Expect: Forbidden)
 kubectl --context=labreadonly-context get pods
 
 7. Create Role "ReadOnly" by command:
-kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-role-readonly.yml
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-role-readonly.yml
 
 8. Create RoleBinding for user "labreadonly" with role "rolereadonly"
-kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-role-readonly.yml
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-labsecurity.yml
+
+9. Try to get pods again.
+kubectl --context=labreadonly-context get pods
+
+10. Try to get svc,delete pods/create new pods: (Expect: Forbidden)
+kubectl --context=labreadonly-context get svc
+kubectl --context=labreadonly-context delete pods/webtest
+kubectl --context=labreadonly-context run webtest --image=labdocker/nginx:http2 --port=443 -n=security
+
+============================================================================================================================================================
+Part 3: Access Control Policy (System Account)
+============================================================================================================================================================
+1. Create Service Account by command:
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
+kubectl get sa
+
+2. Create ClusterRole and ClusterRole Binding by command:
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-clusterrole-readonly.yml
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-serviceaccountreadonly.yml
+
+3. Get secret of service account by command:
+kubectl get secrets		==> Check secret for user "serviceaccount-readonly"
+kubectl describe secret  serviceaccount-readonly-xxxx	==> Record for token
+
+4. Create pods for service account by command:
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
+kubectl get pods -n=security
+
+
+
 
 
