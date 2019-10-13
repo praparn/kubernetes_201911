@@ -101,12 +101,17 @@ kubectl --context=labreadonly-context get svc
 kubectl --context=labreadonly-context delete pods/webtest
 kubectl --context=labreadonly-context run webtest --image=labdocker/nginx:http2 --port=443 -n=security
 
+11. CleanUp Lab:
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-rolebinding-labsecurity.yml
+
+kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-role-readonly.yml
+
 ============================================================================================================================================================
 Part 3: Access Control Policy (System Account)
 ============================================================================================================================================================
 1. Create Service Account by command:
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-serviceaccount-readonly.yml
-kubectl get sa
+kubectl get sa -n=security
 
 2. Create ClusterRole and ClusterRole Binding by command:
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-clusterrole-readonly.yml
@@ -115,8 +120,8 @@ kubectl get clusterrole |grep clusterrolereadonly
 kubectl get clusterrolebinding |grep rolebindingserviceaccountreadonly
 
 3. Get secret of service account by command:
-kubectl get secrets		==> Check secret for user "serviceaccount-readonly"
-kubectl describe secret/serviceaccount-readonly-token-xxxx	==> Record for token
+kubectl get secrets	-n=security	==> Check secret for user "serviceaccount-readonly"
+kubectl describe secret/serviceaccount-readonly-token-xxxxx -n=security	==> Record for token
 -----
 example:
 Data
@@ -130,6 +135,8 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGlj
 kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod-serviceaccount.yml
 kubectl get pods -n=security
 
+5. Access to pods with command:
+kubectl exec -it serviceaccount sh -n=security
 
 
 
