@@ -1,0 +1,10 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: templateaggregateclusterrole
+  namespace: security
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      rbac.kubernetesthailand.com/security: "true"
+rules: [] # Rules are automatically filled in by the controller

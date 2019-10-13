@@ -49,43 +49,42 @@ Part 1: Network Policy
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/frontend-set.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/client-set.yml
 
+
 ============================================================================================================================================================
-Part 2: Pods Security Policy
+Part 2: Access Control Policy (User Account)
 ============================================================================================================================================================
-1. Create namespace "security: and running pods with mount hostpath "/var/lib/docker" within pods on path "/temp"
+
+1. Create namespace "security" and deploy application via command:
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-namespace.yml
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
-2. Access in to pods and test some activity:
-	kubectl exec -it webtest sh -n=security
-	ping 1.1.1.1
-	apk update
-	apk add curl
-	whoami
-	curl https://www.google.com
-	touch /tmp/testcreatefile1
-	touch /home/testcreatefile2
-	touch /etc/testcreatefile3
-	touch /proc/testcreatefile4
-	cp /tmp/testcreatefile /proc/testprohibitfile
-	ls -hl /proc | grep test
-
-3. Test Access Web from browser or curl:
-	http://<Public IP>:32500
-
-4. Install Apparmor for Apply Restrict Policy and Check Apparmor Profile
-	sudo apparmor_parser -r -W ~/kubernetes_201911/WorkShop_2.2_Security/restrict-apparmor
-	sudo aa-status
-
-5. Delete pods by command:
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-pod.yml
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-svc.yml
-
-6. Apply Restrict Policy on Namespaces by command:
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/security-policy-restrict.yml
-	kubectl get psp -n=security
-	kubectl describe psp/restricted -n=security
+	kubectl get pod,svc -n=sec
 	
-4. Apply Pods Security for 
+
+
+1. Create private key for new user account
+cd ~
+openssl genrsa -out labreadonly.key 2048
+
+2. Create CSR from private key (User: labreadonly, OU: labdockerthailand)
+openssl req -new -key labreadonly.key -out labreadonly.csr -subj "/CN=labreadonly/O=labdockerthailand"
+
+3. Generate Certificate base on CSR with aging 365 days
+openssl x509 -req -in labreadonly.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out labreadonly.crt -days 365
+
+4. Private key and Public key will place on /home/ubuntu (~)
+
+5. Setup credential context via kubectl by command:
+kubectl config set-credentials labreadonly --client-certificate=~/labreadonly.crt  --client-key=~/labreadonly.key
+kubectl config set-context labreadonly-context --cluster=kubernetes --namespace=security --user=employee
+
+6. Test use credential for operate by command: (Expect: Access Denied)
+kubectl --context=labreadonly-context get pods
+
+7. Create Role "ReadOnly" by command:
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-role-readonly.yml
+
+8. Create RoleBinding for user "labreadonly" with role "rolereadonly"
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Security/policy-role-readonly.yml
 
 
