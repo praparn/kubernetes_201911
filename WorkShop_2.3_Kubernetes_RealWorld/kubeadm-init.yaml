@@ -48,4 +48,3 @@ networking:
 scheduler:
   extraArgs:
     address: 0.0.0.0
-    enable-admission-plugins: NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota,PodSecurityPolicy

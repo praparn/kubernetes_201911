@@ -1,4 +1,4 @@
-Instruction for Workshop 2.5 Kubernetes in RealWorld:
+Instruction for Workshop 2.3 Kubernetes in RealWorld:
 Note: This instruction will start lab for kubernetes's cluster for real workshop:
 
 0. Reinitial your machine before grouping with your friend by command:
@@ -29,26 +29,26 @@ ssh -i docker_lab ubuntu@<Public IP Address of Master>
 ssh -i docker_lab ubuntu@<Public IP Address of NodePort1>
 ssh -i docker_lab ubuntu@<Public IP Address of NodePort2>
 
-2. (all node) Setup TMUX script and SSH for Share Session:
+2. *Optional* (all node) Setup TMUX script and SSH for Share Session:
 sudo apt-get update && sudo apt-get install -y tmux
 tmux new -s Lab
 
 	# Remark: For your co-worker please kindly ssh to target node and join session with command #
 		tmux attach-session -t Lab
 
-3. (all node) Check hostname for each node and record by command:
+3. *Optional* (all node) Check hostname for each node and record by command:
 	curl http://169.254.169.254/latest/meta-data/local-hostname
 
 4. (Master) Prepare configuration for initial kubernetes master
 	cd ~
-	sed -i -e 's/name: hostnamemaster/name: <hostname of master node>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
-	sed -i -e 's/clusterName: Kubernetes/clusterName: <ClusterName>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
-	sed -i -e 's/1.1.1.1/<Public IP Address of Master>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/name: hostnamemaster/name: <hostname of master node>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/clusterName: Kubernetes/clusterName: <ClusterName>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-init.yaml
+	sed -i -e 's/1.1.1.1/<Public IP Address of Master>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-init.yaml
 
 5. (Master) initial cluster by command:
 	sudo su -
 	swapoff -a
-	kubeadm init --config /home/ubuntu/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-init.yaml
+	kubeadm init --config /home/ubuntu/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-init.yaml
 	exit
 
 	*Remark: Need to record token Output
@@ -66,7 +66,7 @@ tmux new -s Lab
 	sudo chown $(id -u):$(id -g) $HOME/.kube/config
 	kubectl taint nodes --all node-role.kubernetes.io/master-
 
-7. (local) SCP Certificate from AWS to Local: (*Optional: For who install kubectl on local machine: (Ref: https://kubernetes.io/docs/tasks/tools/install-kubectl/))
+7. *Optional* (local) SCP Certificate from AWS to Local: (*Optional: For who install kubectl on local machine: (Ref: https://kubernetes.io/docs/tasks/tools/install-kubectl/))
     scp -i docker_lab ubuntu@<Public IP (Master)>:/home/ubuntu/.kube/config adminconfig.conf
 	*Remark: Windows use WINSCP*
 
@@ -97,27 +97,27 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 
 15. (Worker1) Prepare configuration for initial kubernetes worker:
 cd ~
-sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/name: hostnameworker/name: <full name of worker1 node>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: hostnameworker/name: <full name of worker1 node>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
 
 16. (Worker1) join cluster by command:
 sudo su -
 swapoff -a
-kubeadm join --config /home/ubuntu/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+kubeadm join --config /home/ubuntu/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
 
 17. (Worker2) Prepare configuration for initial kubernetes worker:
 cd ~
-sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
-sed -i -e 's/name: hostnameworker/name: <full name of worker2 node>/g' ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/token: tokenid/token: <token id>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/sha256:cahash/<ca-cert-hash>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/apiServerEndpoint: hostnamemaster:6443/apiServerEndpoint: <full name of master node>:6443/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
+sed -i -e 's/name: hostnameworker/name: <full name of worker2 node>/g' ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
 
 18. (Worker2) join cluster by command:
 sudo su -
 swapoff -a
-kubeadm join --config /home/ubuntu/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/kubeadm-join.yaml
+kubeadm join --config /home/ubuntu/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/kubeadm-join.yaml
 
 19. (Master) Check Node in Cluster by command (This take 5 - 10 min):
 watch kubectl get nodes
@@ -145,9 +145,9 @@ kubectl delete svc/webtest
 
 24. (Master) Create ingress set:
 	24.1. Create mandatory resource by command: 
-	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 	*Remark: If you need to modified config. Edit this file first
-	vi ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	vi ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 ========================================
 Example:
 [...]
@@ -166,7 +166,7 @@ data:
 ========================================
 
 	24.2 Check file service:
-	more ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/service-l4.yaml
+	more ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/service-l4.yaml
 ========================================
 Example:
 [...]
@@ -192,8 +192,8 @@ metadata:
 ========================================
 
 	24.3 Apply service and configuration as below:
-	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/service-l4.yaml
-	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/patch-configmap-l4.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/service-l4.yaml
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/aws/patch-configmap-l4.yaml
 
 	24.4 Check by command: 
 	watch kubectl get pods -n=ingress-nginx
