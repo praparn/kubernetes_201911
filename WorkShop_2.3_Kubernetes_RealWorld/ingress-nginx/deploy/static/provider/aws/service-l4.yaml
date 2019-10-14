@@ -13,6 +13,11 @@ metadata:
     # NGINX keep-alive is set to 75s. If using WebSockets, the value will need to be
     # increased to '3600' to avoid any potential issues.
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+	  service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
+	  service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "2"
+	  service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "30"
+	  service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"
 spec:
   type: LoadBalancer
   selector:

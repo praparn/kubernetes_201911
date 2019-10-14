@@ -18,7 +18,7 @@ Part0: Create Dashboard
 eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWZycXh4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiNmQxMmQ5MS04MTI4LTQ1YzQtYmY3OC00NmE5MDExYmFmYzMiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.hLHaARxgT5jdVCRjnfhN0W37MuVjjoIU-xnUt-FJorZ4w3iHuQfDReRVaYrvdf7mx2w_sR1CVa14KUjT-au6BSbRXDGTmQCdR6CMrAX5R7xpEJE__ekracZXyEENn3S8sAUBA2ApJzrVibDKIDwn6Ri0GYiDbP2ux4pGotqzJaycaz9TKS_6bEbKTYyOBm_uQ10qX3XXft0LgQTHLvZ7ddilx4faFMZ38HUa3rQUCxNmJ4Fs4urY1KZVOHoqnArVeQMhThweQkB3caJGYFs_cyvdna7_LaCF5sgUoljsJE0WscVAuSWf-8UNREIV63C3MbOzgsfuoj7EtE1X3ih3zw
 	------------------------------------------------------------------------------------
 
-3. Open Kubernetes's proxy for operate:
+3. Open Kubernetes's forward for operate:
 	kubectl get pods -n=kubernetes-dashboard
 	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
 	(Ex: kubectl port-forward --address 0.0.0.0 pods/kubernetes-dashboard-7b5bf5d559-stwjc 8443:8443 -n=kubernetes-dashboard)

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kubernetes-dashboard
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: kubernetes-dashboard
 
 ---
 
@@ -45,14 +45,14 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Secret
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard-certs
-  namespace: kubernetes-dashboard
-type: Opaque
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  labels:
+#    k8s-app: kubernetes-dashboard
+#  name: kubernetes-dashboard-certs
+#  namespace: kubernetes-dashboard
+#type: Opaque
 
 ---
 
