@@ -49,7 +49,6 @@ Part 1: Network Policy
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Security/frontend-set.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Security/client-set.yml
 
-
 ============================================================================================================================================================
 Part 2: Access Control Policy (User Account)
 ============================================================================================================================================================

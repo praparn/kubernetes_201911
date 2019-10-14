@@ -15,7 +15,7 @@ Part0: Create Dashboard
 	*Remark: Record Token:
 	Ex:
 	------------------------------------------------------------------------------------
-eyJhbGciOiJSUzI1NiIsImtpZCI6IjRDekxqMXZhU19sU09zM3FZSHBtOS01WWF6WGljelE0Z1F0dXNheUdaVGMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWZycXh4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiNmQxMmQ5MS04MTI4LTQ1YzQtYmY3OC00NmE5MDExYmFmYzMiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.hLHaARxgT5jdVCRjnfhN0W37MuVjjoIU-xnUt-FJorZ4w3iHuQfDReRVaYrvdf7mx2w_sR1CVa14KUjT-au6BSbRXDGTmQCdR6CMrAX5R7xpEJE__ekracZXyEENn3S8sAUBA2ApJzrVibDKIDwn6Ri0GYiDbP2ux4pGotqzJaycaz9TKS_6bEbKTYyOBm_uQ10qX3XXft0LgQTHLvZ7ddilx4faFMZ38HUa3rQUCxNmJ4Fs4urY1KZVOHoqnArVeQMhThweQkB3caJGYFs_cyvdna7_LaCF5sgUoljsJE0WscVAuSWf-8UNREIV63C3MbOzgsfuoj7EtE1X3ih3zw
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkZrTkFjN296TUxsbmFfZmU0MklfLVdUdnRjQXFyMWJ1TzFLbWRDckU1YncifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXE1Z2Z2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1MmNiZjU3NS02Y2ExLTQ3YzQtOWQwOS0zYzg1ZTlmMTkxOTEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.hNxqxqeLK1JxOzK4OYPLbv7FlumBkHrwjL6lDUulaMEU1Iwy1Gq9cJvrLj5dh7xec86PasEckTq1BZo63zOvGBrvjVqH4tTecepQLiY-H584V7bcaY2Ps6hr21DVQEcU_mrJ47KlPMxCbXwrARHaaTMQHIgM1MXE4e8Zsk1FBXMZR9YfxRivyBgmc77hJbbs7VExf8v5_QdJPmq-lFA2-whu4jK7kJ_wFq8Xh_aiHegKbkl61FwfgByZarZMT_dHkt4CVx5XbyvEYd_MSJH9qD0CFsXa-TKgP0MJhqJwHbI0FXpW_gG3XiKIbTK0yKrE1eCpGyvyNSnGCxdPbwWbTA
 	------------------------------------------------------------------------------------
 
 3. Open Kubernetes's forward for operate:
@@ -68,7 +68,6 @@ Part1: Container level configuration:
 10. Cancel all work load and Delete Pods by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_pod.yml
 
-
 ====================================================
 Part 2: Name space level configuration:
 ====================================================
@@ -111,16 +110,17 @@ Part 2: Name space level configuration:
 	kubectl describe pods <pods name> --namespace=webtest-namespace
 
 10. Start burn test cpu and monitor cpu by command:
+	kubectl get pods --namespace=webtest-namespace
 	kubectl exec <pod name> -c webtest md5sum /dev/urandom --namespace=webtest-namespace
 	<When finished> <Ctrl+c> for cancel
 	htop
 
 11. Set resource for Deployment to Normal "0.8CPU", "800MB memory" by command:
-kubectl set resources deployment/webtest --limits=cpu="1",memory=1Gi --requests=cpu="0.8",memory=800Mi --record --namespace=webtest-namespace
-kubectl rollout status deployment/webtest --namespace=webtest-namespace
-kubectl get rs --namespace=webtest-namespace
-kubectl get pods --namespace=webtest-namespace
-kubectl describe pods <pods name> --namespace=webtest-namespace
+	kubectl set resources deployment/webtest --limits=cpu="1",memory=1Gi --requests=cpu="0.8",memory=800Mi --record --namespace=webtest-namespace
+	kubectl rollout status deployment/webtest --namespace=webtest-namespace
+	kubectl get rs --namespace=webtest-namespace
+	kubectl get pods --namespace=webtest-namespace
+	kubectl describe pods <pods name> --namespace=webtest-namespace
 
 12. Clean up lab by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.7_Resource_Management/webtest_deploy.yml --namespace=webtest-namespace

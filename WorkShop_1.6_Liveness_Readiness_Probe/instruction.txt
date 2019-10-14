@@ -27,16 +27,17 @@ This workshop will use execute some command on container for probe
 
 4. Check status of Pods by command: (Wait about 2 -3 min)
 	watch kubectl get pods --show-labels
+	kubectl get pods --show-labels
 	kubectl describe pods/<pods name>
 
 5. Access to container on pods and try to delete the file "main.py"
+	kubectl get pods --show-labels
 	kubectl exec -it <pods name> -c webtest sh 
 	ls -lh
 	exit
 
 6. Cleanup Lab by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.6_Liveness_Readiness_Probe/webtest_deploy_liveness_readiness_exec.yml
-
 
 ====================================================
 Part 2: TCPSocket Probe
@@ -55,7 +56,7 @@ This workshop will use TCPSocket some command on container for probe
 (vi webtest_deploy_liveness_readiness_port.yml)
 
 4. Apply new configuration by command:
-	kubectl apply -f webtest_deploy_liveness_readiness_port.yml 
+	kubectl apply -f webtest_deploy_liveness_readiness_port.yml
 
 5. Check status of pods by command (3 -5 min):
 	kubectl get pods --show-labels
@@ -65,7 +66,7 @@ This workshop will use TCPSocket some command on container for probe
 (vi webtest_deploy_liveness_readiness_port.yml)
 
 6. Apply new configuration by command:
-	kubectl apply -f webtest_deploy_liveness_readiness_port.yml 
+	kubectl apply -f webtest_deploy_liveness_readiness_port.yml
 
 7. Check status of pods by command (3 -5 min):
 	kubectl get pods --show-labels
@@ -73,7 +74,6 @@ This workshop will use TCPSocket some command on container for probe
 
 8. Cleanup Lab by command:
 	kubectl delete -f webtest_deploy_liveness_readiness_port.yml
-
 
 ====================================================
 Part 3: HTTPGet Probe

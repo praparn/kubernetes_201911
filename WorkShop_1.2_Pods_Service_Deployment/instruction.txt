@@ -84,7 +84,6 @@ This workshop will create Pods with multiple container
 	export Server_IP=<Private IP>
 	export Server_Port=30500	==> Check port had been fixed from YML file
 
-
 7. Test get webpage by browser: http://<Public IP>:30500
 
 8. Initial database by command:
@@ -127,7 +126,6 @@ This workshop will create Pods with multiple container
 		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml
 		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_pod.yml
 		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_svc.yml
-
 
 ====================================================
 Part 3: Check API Version, Kubernetes Component

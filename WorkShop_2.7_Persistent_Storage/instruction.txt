@@ -20,7 +20,7 @@ kubectl get pv
 kubectl get pvc
 
 3. (Master) Test create dynamic provision disk from "Persistent Volume Claim (PVC)" from "Storage Class" by command:
-ubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml
+kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.7_Persistent_Storage/aws_pvc.yml
 watch kubectl get pvc         ==> Take around 1 - 2 min
 ===================================================
 Example Result:
@@ -56,6 +56,7 @@ kubectl describe pods/<pods name>
 http://<any public ip>:32500
 
 4. (Master) Access to pods by kubectl or docker exec and check mount volume by command:
+kubectl get pods
 kubectl exec -it <pods name> sh
 ls
 df -h

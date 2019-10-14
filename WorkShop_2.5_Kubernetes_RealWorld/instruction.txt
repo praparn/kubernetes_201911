@@ -91,7 +91,7 @@ tmux new -s Lab
 	*Remark: Record Token:
 	Ex:
 	------------------------------------------------------------------------------------
-eyJhbGciOiJSUzI1NiIsImtpZCI6ImZxbjR3QWxLSW50blZJNWw1VjlGYWRIOU0zWTBVTU0yZ2RnVFlFeXJEWEUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXBtY2tiIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI0NWJjNzQxOS03MmMyLTQ4NGQtYTlkMi00ZjJhYTMzNjNlOWEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.Eyja5J4hTMXjk8JYsTpVqMtjHrBRfqeL24J7w00mqF7q-X8RTVCLC9OMXCvF1NAVRufw1I2Hz0wcqrFTAbtmuaXuNBExrL4i-IC8ocXMiCosiRqNQWjfVjhrUA4S3BUNp3ScOwGsDBz0h3EjS7sWfac87Bj34-_anLINSkn4nyVPUV2RD3HnxIvGJGPrEW_qDViInD2uQcZEmSMvA6L_S9dprPQYgDjChPGrK--wDvJhZi2I4jy-NSjp9Klm9ey56S90csd9oN8lBBl8-k4ihywX8J2PEXCBikztPAUJwJ2BrRgJyiDicUD_6E-7DSasWmctVrr6jWSD5mZFnpoX1g
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlRDdC1fSU1Dek5qSGd1S213NHN0OG5rdVJULTdwR0tmb3hDdXpEN2Q5ZzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXFsd3hrIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI3MGY0MTZhMS03YWQwLTRiNzItOTc1Yy0xNzNmYTUxYzBiMWMiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.I5ttj-mqHfOPmJggmAQYBpvhPWxnX7RWPWWYBvCfKBJFdxpYAuroo7uD94PoarK4UGD-wwWT99XlOPJiQYnXFfcbrGO_yTnAojGRdWmRL0VLMOUbenILy-xfMq5TX8NHqX8AVRhBBD6BKnlrSEB_gTc9Xi1KiVImDlyMhNzVo-ITwYmoOlOqVpg7gV_56cZ82omYg8lEV6YjbkMx7AoK4aif5LHOCWY-5PQyxN7MghJRdiKLGmwAzgaQlNg1HkNMRavCEF9c-rr1fuGhsAxFOgUPUgW7XArwjwloGPCc6yMbXRhRMQqkgB6X8W093mgHaFZv4VWgsMAfqOEIE5_-nQ
 	------------------------------------------------------------------------------------
 
 11. (Master) Open Kubernetes's forward for operate:
@@ -154,14 +154,13 @@ https://x.x.x.x:xxxx
 kubectl delete deployment/webtest
 kubectl delete svc/webtest
 
-
 ====================================== Create Ingress Controller====================================================
 
 21. (Master) Create ingress set:
 	21.1. Create mandatory resource by command: 
 	kubectl apply -f ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 	*Remark: If you need to modified config. Edit this file first
-	vi ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	more ~/kubernetes_201911/WorkShop_2.5_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
 ========================================
 Example:
 [...]
@@ -223,14 +222,14 @@ ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23
 25. (Master) Test deploy ingress service
 
 # Create Service/Pods/Deployment for webtest1 and webtest2 by command:
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy.yml
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy2.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml
 
 # View service for connection by command:
 	kubectl get svc -o wide
 
 # Create ingress for access by command:
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/ingress_webtest.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
 	kubectl get ing -o wide
 	kubectl describe ing/ingresswebtest
 
@@ -238,9 +237,9 @@ ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23
 	curl http://<CNAME AWS's ELB> -H 'Host:webtest1.kuberneteslabthailand.com'
 	curl http://<CNAME AWS's ELB> -H 'Host:webtest2.kuberneteslabthailand.com'
 
-27. (Master) Delete Existing Ingress by command:
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/ingress_webtest.yml
+27. (Master) Delete Ingress by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
 	
 28. (Master) Clean Up Lab:
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy.yml
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy2.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml

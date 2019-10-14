@@ -53,7 +53,6 @@ Part 2: Interlude:
 3. (Master) Delete Pods by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.6_Orchestrator_Assignment/webtest_pod_interlude.yml
 
-
 Part 3: Affinity (Node):
 1. (Master) Create Pods by command:
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.6_Orchestrator_Assignment/webtest_pod_affinity.yml

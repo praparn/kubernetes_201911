@@ -57,7 +57,6 @@ kubectl get secret --namespace grafana helmgrafana -o jsonpath="{.data.admin-pas
 4. Check release for helm by command:
    helm3 ls --all -n=grafana
    kubectl get pods -n=grafana
-   kubectl get svc -n=grafana
 
 5. Check port to access by command:
    kubectl get svc -n=grafana
@@ -65,5 +64,6 @@ kubectl get secret --namespace grafana helmgrafana -o jsonpath="{.data.admin-pas
 6. Test access to grafana by url http://<any public ip address of node>:<port of service from No.5>
 
 7. Cleanup lab by command:
-	helm3 uninstall helmgrafana -n=grafana
-  helm3 ls -n=grafana
+   helm3 uninstall helmgrafana -n=grafana
+   helm3 ls -n=grafana
+   kubectl delete namespace/grafana
