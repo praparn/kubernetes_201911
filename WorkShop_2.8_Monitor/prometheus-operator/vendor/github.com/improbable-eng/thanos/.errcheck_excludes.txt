@@ -1,3 +1,0 @@
-(github.com/improbable-eng/thanos/vendor/github.com/go-kit/kit/log.Logger).Log
-fmt.Fprintln
-fmt.Fprint

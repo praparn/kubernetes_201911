@@ -1,0 +1,50 @@
+Instruction for Workshop 2.2_Log_and_Monitoring:
+Note: This instruction will demonstrate about how to track log and monitor:
+====================================================
+
+====================================================
+Part1: Container Logging:
+====================================================
+1. Get command prompt for access folder workshop 2.2 by command :cd /xxxx/WorkShop_2.2_Log_and_Monitoring
+2. Check File on WorkShop
+
+3. Create Database Deployment by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Log_and_Monitoring/databasemodule_deploy.yml
+	kubectl get deployment/maindb
+	kubectl get rs
+	kubectl get pods
+
+4. Check Detail of Pods by command:
+	kubectl describe pods/<pods name>
+
+5. Check Log of Pods/Container by command:
+	kubectl get pods
+	kubectl logs pods/<pods name> -c maindb
+
+6. Create WebModule Deployment by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Log_and_Monitoring/webmodule_deploy.yml
+	kubectl get deployment/web
+	kubectl get rs
+	kubectl get pods
+
+7. Check Log of WebService by command:
+	kubectl logs pods/<pods name> -c webservice
+
+8. Check Log of WebCache by command:
+	kubectl logs pods/<pods name> -c webcache
+
+9. Check Log of Cachedb by command:
+	kubectl logs pods/<pods name> -c cachedb
+
+10. Open kubenetes dashboard by command:
+	kubectl get secret -n kubernetes-dashboard 
+	kubectl describe secret <admin-user-token-xxx> -n kubernetes-dashboard ==> Record Token
+	kubectl get pods -n=kubernetes-dashboard
+	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
+
+	*Test by open browser: 
+	https://<Public IP>:8443
+
+11. Cleanup lab by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Log_and_Monitoring/databasemodule_deploy.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.2_Log_and_Monitoring/webmodule_deploy.yml

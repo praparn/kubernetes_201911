@@ -19,11 +19,11 @@ docker image pull labdocker/cadvisor:latest
 2. Check file on workshop
 
 3. Create Pods and check Pods state (Expect: Running) by command:
-	kubectl create -f webtest_pod.yml 		(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_pod.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_pod.yml
 	kubectl get pods
 
 4. Create Service and check mapping port by command:
-	kubectl create -f webtest_svc.yml 		(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_svc.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_svc.yml
 	kubectl get svc
 
 	---------------------------------------------------
@@ -51,8 +51,8 @@ docker image pull labdocker/cadvisor:latest
 	exit
 
 8. Clear environment by delete Pods and service by command:
-	kubectl delete  -f webtest_pod.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_pod.yml)
-	kubectl delete  -f webtest_svc.yml 	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_svc.yml)
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_pod.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/singlecontainer/webtest_svc.yml
 
 ====================================================
 Part 2: Create multiple
@@ -67,15 +67,15 @@ This workshop will create Pods with multiple container
 -rw-r--r--@ 1 praparn  staff   484B Jul  2 19:24 webmodule_svc.yml
 
 3. Create Pods and Service for databasemodule (maindb) by command (Step-by-Step Wait until previous complete before next step):
-	kubectl create -f databasemodule_pod.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_pod.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_pod.yml
 	kubectl get pods
-	kubectl create -f databasemodule_svc.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_svc.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_svc.yml
 	kubectl get svc
 
 4. Create Pods and Service for webservicemodule (web) by command (Step-by-Step Wait until previous complete before next step):
-	kubectl create -f webmodule_pod.yml  (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod.yml
 	kubectl get pods
-	kubectl create -f webmodule_svc.yml  (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml )
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml
 	kubectl get svc
 
 5. Check ip address by command: ifconfig (Check: ens5 device)
@@ -114,7 +114,7 @@ This workshop will create Pods with multiple container
 		curl http://$Server_IP:$Server_Port/users/removeuser/4
 
 12. Create Pods for "web2" and check readyness by command:
-		kubectl create -f webmodule_pod2.yml  (In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod2.yml )
+		kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod2.yml
 		kubectl get pods
 
 13. Delete existing Pods "web" by command:
@@ -123,10 +123,10 @@ This workshop will create Pods with multiple container
 14. Test get webpage by browser: curl http://$Server_IP:$Server_Port/
 
 15. Remove Pods and Service for Cleanup by command:
-		kubectl delete -f webmodule_pod2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod2.yml)
-		kubectl delete -f webmodule_svc.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml)
-		kubectl delete -f databasemodule_pod.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_pod.yml)
-		kubectl delete -f databasemodule_svc.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_svc.yml)
+		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_pod2.yml
+		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/webmodule_svc.yml
+		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_pod.yml
+		kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_1.2_Pods_Service_Deployment/multicontainer/databasemodule_svc.yml
 
 
 ====================================================

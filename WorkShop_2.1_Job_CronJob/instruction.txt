@@ -1,0 +1,74 @@
+Instruction for Workshop 2.1_Job_CronJob:
+Note: This instruction will demonstrate about how to manage use job and cronjob:
+====================================================
+Part0: Generate LINE token:
+1. Access website https://notify-bot.line.me
+2. Choose "Login" with line account
+3. Choose "My Page" and "Generate Token"
+4. Input "Token Name" and Select "Direct LINE Notify" (1-by-1)
+5. Copy TOKEN for Operate Next
+
+====================================================
+Create Job for Monitor System via LINE:
+====================================================
+1. Get command prompt for access folder workshop 2.1 by command :cd /xxxx/WorkShop_2.1_Job_CronJob
+2. Check File on WorkShop by command: "cd ~/kubernetes_201911/WorkShop_2.1_Job_CronJob/"
+3. Open job.yml file and Edit Environment (In case of cloud: vi job.yml)
+	        env:
+        - name: TITLE
+          value: "BOT:Praparn L."					==> Input Your Name
+        - name: INTERVAL
+          value: "10000"									==> Input Time Interval in Job (ms)
+        - name: HEAP_HIGH
+          value: "40"											==> Input High Monitor HEAP %
+        - name: MEM_HIGH
+          value: "20"											==> Input High Memory %
+        - name: SH_OS
+          value: "Y"											==> Input "Y"
+        - name: TOKEN
+          value: "EIeqyillzkzpaCo1ROrebZTcGbIyzDZHpOjcdd0t6CX"	==> Input LINE TOKEN
+
+
+4. Create Job by command:
+	kubectl create -f job.yml 
+	kubectl get jobs -o wide
+	kubectl get pods -o wide
+
+  ****After Complete Pods will gone. We can view all complete by command***
+  kubectl get pods -o wide
+5. Check Detail of Job by command:
+	kubectl describe jobs/linenotify
+
+6. Monitor Result on LINE Application:
+
+7. CleanUp Job by command:
+kubectl get jobs --all-namespaces | sed '1d' | awk '{ print $2}'| while read line; do kubectl delete jobs $line; done
+
+8. Open job_notify_cron.yml file and Edit Environment (In case of cloud: vi job_notify_cron.yml):
+	        env:
+        - name: TITLE
+          value: "BOT NOTIFY:Praparn L."					==> Input Your Name
+        - name: INTERVAL
+          value: "10000"									==> Input Time Interval in Job (ms)
+        - name: HEAP_HIGH
+          value: "20"											==> Input 20%
+        - name: MEM_HIGH
+          value: "20"											==> Input 20%
+        - name: SH_OS
+          value: "Y"											==> Input "N"
+        - name: TOKEN
+          value: "EIeqyillzkzpaCo1ROrebZTcGbIyzDZHpOjcdd0t6CX"	==> Input LINE TOKEN
+
+9. Create Job by command: (Monitor 5 - 6 min)
+	kubectl create -f job_notify_cron.yml 
+	kubectl get cronjob -o wide
+  watch kubectl get jobs
+
+
+10. Check Detail of Job by command:
+	kubectl describe cronjob/linenotify
+
+11. Monitor Result on LINE Application:
+
+12. Delete Cronjob by command:
+kubectl delete -f job_notify_cron.yml 

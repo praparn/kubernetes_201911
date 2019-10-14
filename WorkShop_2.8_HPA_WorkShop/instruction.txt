@@ -1,0 +1,53 @@
+====================================================
+Part0: Install Metric Server
+====================================================
+1. (Master) Create Metric Server:
+	cd ~/kubernetes_201911/WorkShop_2.8_HPA_WorkShop/metrics-server/
+	kubectl create -f deploy/1.8+/
+	kubectl get pods -n=kube-system
+	kubectl logs pods/<metrics's pods name> -n=kube-system
+
+2. (Master) Test get performance data from metric server by command: (Wait 5 min)
+	kubectl top nodes
+====================================================
+Part 1: HPA Configuration:
+====================================================
+1. Create Application by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml
+	 
+2. Check Pods status by command:
+	kubectl get deployment/webtest -o wide
+	kubectl get svc/webtest -o wide
+
+3. Test Access by url:
+	http://x.x.x.x:32500
+
+4. Apply HPA by command:
+	kubectl autoscale deployment/webtest --min=1 --max=10 --cpu-percent=10 
+
+5. Monitor by command: (5 - 10 min)
+	watch kubectl get hpa		==> Until Get Performance Data
+	kubectl describe hpa/webtest
+
+6. Generate Load:
+	kubectl run -i --tty load-generator --image=busybox /bin/sh			==> <Check Until Load Generator WorkFine>
+	wget -q -O- http://webtest.default.svc.cluster.local:5000
+	while true; sleep 0.01; do wget -q -O- http://webtest.default.svc.cluster.local:5000; done
+
+7. Create another shell for monitor performance by command: (Interval is 5 min)
+	kubectl get hpa
+	kubectl top pods
+	kubectl top nodes
+
+8. Scale Down by Ctrl+C on load-generate
+
+9. Monitor performance: (Interval is 10 min)
+	kubectl get hpa
+	kubectl top pods
+	kubectl top nodes
+	kubectl describe hpa/webtest
+
+10. Cleanup lab by command:
+	kubectl delete hpa/webtest
+	kubectl delete deployment/load-generator
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml

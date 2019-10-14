@@ -1,0 +1,109 @@
+Instruction for Workshop 2.3 Ingress Network:
+Note: This instruction will start lab for kubernetes for ingress workshop
+--------------------------------------------------------------------------
+0. (Master) Create ingress set:
+	0.1 Create mandatory resource by command: 
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+	*Remark: If you need to modified config. Edit this file first
+	vi ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/mandatory.yaml
+========================================
+Example:
+[...]
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-configuration
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+
+[...]
+========================================
+	0.2 Create service with NodePort by command: 
+	kubectl apply -f ~/kubernetes_201911/WorkShop_2.3_Kubernetes_RealWorld/ingress-nginx/deploy/static/provider/baremetal/service-nodeport.yaml
+	kubectl get svc -n=ingress-nginx				==> Record Port No for Create LoadBalancer (*Important)
+	kubectl get pods -n=ingress-nginx			
+
+========================================
+Example:
+NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx   NodePort   10.96.228.199   <none>        80:32037/TCP,443:32119/TCP   12h		(Port of http(80) ==> 32037, Port of https(443) ==> 32119 )
+========================================
+
+	0.3 Test open browser: (404 Not Found was expected):
+		http://<public ip>:<Port of http(80)>
+
+1. Create Service/Pods/Deployment for webtest1 and webtest2 by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml
+
+2. View service for connection by command:
+	kubectl get svc -o wide
+	-------------------------------
+	Example Result:
+	-------------------------------
+	NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE       SELECTOR
+kubernetes   10.0.0.1     <none>        443/TCP   17d       <none>
+webtest1     10.0.0.147   <none>        80/TCP    14s       environment=development,module=WebServer,name=webtest1,owner=Praparn
+_L,version=1.0
+webtest2     10.0.0.222   <none>        80/TCP    11s       environment=development,module=WebServer,name=webtest2,owner=Praparn
+_L,version=1.0
+	-------------------------------
+	
+3. Try to connect for each service via curl by command:
+	kubectl run curl --image=radial/busyboxplus:curl -i --tty
+	curl http://<ip of webtest1> or curl http://webtest1
+	curl http://<ip of webtest2> or curl http://webtest2
+
+4. Create ingress for access by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
+	kubectl get ing -o wide
+	kubectl describe ing/ingresswebtest
+
+5. Check Your Public IP Address by command:
+	curl https://ifconfig.co/
+
+6. Add Hosts (/etc/hosts) or (c:\windows\system32\driver\etc\hosts) with minikube ip by command:
+	For Windows:
+		<Public IP> webtest1.kuberneteslabthailand.com webtest2.kuberneteslabthailand.com
+
+	For Mac:
+	echo "<Public IP> webtest1.kuberneteslabthailand.com webtest2.kuberneteslabthailand.com" | sudo tee -a /private/etc/hosts
+
+7. Test access website by browser:
+	http://webtest1.kuberneteslabthailand.com:<Port from Record>
+	http://webtest2.kuberneteslabthailand.com:<Port from Record>
+
+	*Remark: We can test with curl in lab machine by command:
+	curl http://<Public IP>:<Port of http(80)> -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:<Port of http(80) -H 'Host:webtest2.kuberneteslabthailand.com'
+
+8. Delete Existing Ingress by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
+
+9. Create TLS Secret by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml
+
+10. Create ingress for TLS by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls.yml
+	kubectl get ing/ingresswebtesttls -o wide
+	kubectl describe ing/ingresswebtesttls
+
+11. Test access website by browser:
+	https://webtest1.kuberneteslabthailand.com:<Port of https(443)>
+	https://webtest2.kuberneteslabthailand.com:<Port of https(443)>
+
+	*Remark: We can test with curl in lab machine by command:
+	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl https://<Public IP>:<Port of https(443)> -k -H 'Host:webtest2.kuberneteslabthailand.com'
+
+
+12. Clean Up Lab:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml
+	kubectl delete deployment/curl
