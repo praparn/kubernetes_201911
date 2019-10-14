@@ -1,11 +1,12 @@
 # Common User-Settable Flags
 # ==========================
-PREFIX?=gcr.io/google_containers
+# Push to staging registry.
+PREFIX?=staging-k8s.gcr.io
 FLAGS=
 ARCH?=amd64
 GOLANG_VERSION?=1.10
-# You can set this variable for testing and the built image will also be tagged with this name
-IMAGE_NAME?=$(PREFIX)/metrics-server-$(ARCH):$(VERSION)
+GOLANGCI_VERSION := v1.15.0
+HAS_GOLANGCI := $(shell which golangci-lint)
 
 # by default, build the current arch's binary
 # (this needs to be pre-include, for some reason)
@@ -14,7 +15,6 @@ all: _output/$(ARCH)/metrics-server
 # Constants
 # =========
 ALL_ARCHITECTURES=amd64 arm arm64 ppc64le s390x
-ML_PLATFORMS=linux/amd64,linux/arm,linux/arm64,linux/ppc64le,linux/s390x
 
 # Calculated Variables
 # ====================
@@ -22,28 +22,11 @@ REPO_DIR:=$(shell pwd)
 LDFLAGS=-w $(VERSION_LDFLAGS)
 # get the appropriate version information
 include hack/Makefile.buildinfo
-# Set default base image dynamically for each arch
-ifeq ($(ARCH),amd64)
-	BASEIMAGE?=busybox
-endif
-ifeq ($(ARCH),arm)
-	BASEIMAGE?=arm32v7/busybox
-endif
-ifeq ($(ARCH),arm64)
-	BASEIMAGE?=arm64v8/busybox
-endif
-ifeq ($(ARCH),ppc64le)
-	BASEIMAGE?=ppc64le/busybox
-endif
-ifeq ($(ARCH),s390x)
-	BASEIMAGE?=s390x/busybox
-endif
-
-
+BASEIMAGE?=gcr.io/distroless/static:latest
 # Rules
 # =====
 
-.PHONY: all test-unit container container-* clean container-only container-only-* tmp-dir push do-push-* sub-push-*
+.PHONY: all test-unit container container-* clean container-only container-only-* tmpdir push do-push-* sub-push-* lint
 
 # Build Rules
 # -----------
@@ -63,17 +46,18 @@ _output/%/metrics-server: $(src_deps) pkg/generated/openapi/zz_generated.openapi
 # build a container using containerized build (the current arch by default)
 container: container-$(ARCH)
 
-container-%: pkg/generated/openapi/zz_generated.openapi.go tmpdir
+container-%: pkg/generated/openapi/zz_generated.openapi.go tmpdir-%
 	# Run the build in a container in order to have reproducible builds
 	docker run --rm -v $(TEMP_DIR):/build -v $(REPO_DIR):/go/src/github.com/kubernetes-incubator/metrics-server -w /go/src/github.com/kubernetes-incubator/metrics-server golang:$(GOLANG_VERSION) /bin/bash -c "\
-		GOARCH=$(ARCH) CGO_ENABLED=0 go build -ldflags \"$(LDFLAGS)\" -o /build/metrics-server github.com/kubernetes-incubator/metrics-server/cmd/metrics-server"
+		GOARCH=$* CGO_ENABLED=0 go build -ldflags \"$(LDFLAGS)\" -o /build/metrics-server github.com/kubernetes-incubator/metrics-server/cmd/metrics-server"
+
 
 	# copy the base Dockerfile into the temp dir, and set the base image
 	cp deploy/docker/Dockerfile $(TEMP_DIR)
 	sed -i -e "s|BASEIMAGE|$(BASEIMAGE)|g" $(TEMP_DIR)/Dockerfile
 
 	# run the actual build
-	docker build --pull -t $(IMAGE_NAME) $(TEMP_DIR)
+	docker build --pull -t $(PREFIX)/metrics-server-$*:$(VERSION) $(TEMP_DIR)
 
 	# remove our TEMP_DIR, as needed
 	rm -rf $(TEMP_DIR)
@@ -81,14 +65,14 @@ container-%: pkg/generated/openapi/zz_generated.openapi.go tmpdir
 # build a container using a locally-built binary (the current arch by default)
 container-only: container-only-$(ARCH)
 
-container-only-%: _output/$(ARCH)/metrics-server tmpdir
+container-only-%: _output/$(ARCH)/metrics-server tmpdir-%
 	# copy the base Dockerfile and binary into the temp dir, and set the base image
 	cp deploy/docker/Dockerfile $(TEMP_DIR)
-	cp _output/$(ARCH)/metrics-server $(TEMP_DIR)
+	cp _output/$*/metrics-server $(TEMP_DIR)
 	sed -i -e "s|BASEIMAGE|$(BASEIMAGE)|g" $(TEMP_DIR)/Dockerfile
 
 	# run the actual build
-	docker build --pull -t $(IMAGE_NAME) $(TEMP_DIR)
+	docker build --pull -t $(PREFIX)/metrics-server-$*:$(VERSION) $(TEMP_DIR)
 
 	# remove our TEMP_DIR, as needed
 	rm -rf $(TEMP_DIR)
@@ -102,7 +86,7 @@ do-push-%:
 	docker push $(PREFIX)/metrics-server-$*:$(VERSION)
 
 	# push alternate tags
-ifeq ($(ARCH),amd64)
+ifeq ($*,amd64)
 	# TODO: Remove this and push the manifest list as soon as it's working
 	docker tag $(PREFIX)/metrics-server-$*:$(VERSION) $(PREFIX)/metrics-server:$(VERSION)
 	docker push $(PREFIX)/metrics-server:$(VERSION)
@@ -143,5 +127,10 @@ endif
 
 # set up a temporary director when we need it
 # it's the caller's responsibility to clean it up
-tmpdir:
+tmpdir-%:
 	$(eval TEMP_DIR:=$(shell mktemp -d /tmp/metrics-server.XXXXXX))
+lint:
+ifndef HAS_GOLANGCI
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(GOPATH)/bin ${GOLANGCI_VERSION}
+endif
+	golangci-lint run

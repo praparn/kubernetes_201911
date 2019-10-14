@@ -223,24 +223,24 @@ ingress-nginx   LoadBalancer   10.108.187.142   af4e0d29c410111e9a11002f20ffeb23
 25. (Master) Test deploy ingress service
 
 # Create Service/Pods/Deployment for webtest1 and webtest2 by command:
-	kubectl create -f webtest_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml )
-	kubectl create -f webtest_deploy2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml )
+	kubectl create -f webtest_deploy.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy.yml )
+	kubectl create -f webtest_deploy2.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy2.yml )
 
 # View service for connection by command:
 	kubectl get svc -o wide
 
 # Create ingress for access by command:
-	kubectl create -f ingress_webtest.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml )
+	kubectl create -f ingress_webtest.yml 	(In case run via github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/ingress_webtest.yml )
 	kubectl get ing -o wide
 	kubectl describe ing/ingresswebtest
 
-26. (local) Test access website by command or browser:
+26. (Master/Local (MAC)) Test access website by command or browser:
 	curl http://<CNAME AWS's ELB> -H 'Host:webtest1.kuberneteslabthailand.com'
 	curl http://<CNAME AWS's ELB> -H 'Host:webtest2.kuberneteslabthailand.com'
 
 27. (Master) Delete Existing Ingress by command:
-	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/ingress_webtest.yml)
+	kubectl delete -f ingress_webtest.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/ingress_webtest.yml)
 	
 28. (Master) Clean Up Lab:
-	kubectl delete -f webtest_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy.yml)
-	kubectl delete -f webtest_deploy2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.4_Ingress_Network/webtest_deploy2.yml)
+	kubectl delete -f webtest_deploy.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy.yml)
+	kubectl delete -f webtest_deploy2.yml	(In case run via github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.1_Ingress_Network/webtest_deploy2.yml)

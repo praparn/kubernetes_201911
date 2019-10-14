@@ -19,18 +19,19 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang/glog"
-
 	"github.com/kubernetes-incubator/metrics-server/pkg/provider"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apiserver/pkg/registry/generic"
 	"k8s.io/apiserver/pkg/registry/rest"
 	v1listers "k8s.io/client-go/listers/core/v1"
+	"k8s.io/klog"
 	"k8s.io/metrics/pkg/apis/metrics"
 	_ "k8s.io/metrics/pkg/apis/metrics/install"
 )
@@ -73,18 +74,23 @@ func (m *MetricStorage) NewList() runtime.Object {
 // Lister interface
 func (m *MetricStorage) List(ctx context.Context, options *metainternalversion.ListOptions) (runtime.Object, error) {
 	labelSelector := labels.Everything()
+	fieldSelector := fields.Everything()
 	if options != nil && options.LabelSelector != nil {
 		labelSelector = options.LabelSelector
 	}
+	if options != nil && options.FieldSelector != nil {
+		fieldSelector = options.FieldSelector
+	}
 	nodes, err := m.nodeLister.ListWithPredicate(func(node *v1.Node) bool {
-		if labelSelector.Empty() {
+		if labelSelector.Empty() && fieldSelector.Empty() {
 			return true
 		}
-		return labelSelector.Matches(labels.Set(node.Labels))
+		fieldsSet := generic.AddObjectMetaFieldsSet(make(fields.Set, 2), &node.ObjectMeta, true)
+		return labelSelector.Matches(labels.Set(node.Labels)) && fieldSelector.Matches(fieldsSet)
 	})
 	if err != nil {
 		errMsg := fmt.Errorf("Error while listing nodes for selector %v: %v", labelSelector, err)
-		glog.Error(errMsg)
+		klog.Error(errMsg)
 		return &metrics.NodeMetricsList{}, errMsg
 	}
 
@@ -96,7 +102,7 @@ func (m *MetricStorage) List(ctx context.Context, options *metainternalversion.L
 	metricsItems, err := m.getNodeMetrics(names...)
 	if err != nil {
 		errMsg := fmt.Errorf("Error while fetching node metrics for selector %v: %v", labelSelector, err)
-		glog.Error(errMsg)
+		klog.Error(errMsg)
 		return &metrics.NodeMetricsList{}, errMsg
 	}
 
@@ -109,7 +115,7 @@ func (m *MetricStorage) Get(ctx context.Context, name string, opts *metav1.GetOp
 		err = fmt.Errorf("no metrics known for node %q", name)
 	}
 	if err != nil {
-		glog.Errorf("unable to fetch node metrics for node %q: %v", name, err)
+		klog.Errorf("unable to fetch node metrics for node %q: %v", name, err)
 		return nil, errors.NewNotFound(m.groupResource, name)
 	}
 
@@ -126,7 +132,7 @@ func (m *MetricStorage) getNodeMetrics(names ...string) ([]metrics.NodeMetrics, 
 
 	for i, name := range names {
 		if usages[i] == nil {
-			glog.Errorf("unable to fetch node metrics for node %q: no metrics known for node", name)
+			klog.Errorf("unable to fetch node metrics for node %q: no metrics known for node", name)
 
 			continue
 		}

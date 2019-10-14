@@ -61,6 +61,7 @@ func NewCommandStartMetricsServer(out, errOut io.Writer, stopCh <-chan struct{})
 	flags.IntVar(&o.KubeletPort, "kubelet-port", o.KubeletPort, "The port to use to connect to Kubelets.")
 	flags.StringVar(&o.Kubeconfig, "kubeconfig", o.Kubeconfig, "The path to the kubeconfig used to connect to the Kubernetes API server and the Kubelets (defaults to in-cluster config)")
 	flags.StringSliceVar(&o.KubeletPreferredAddressTypes, "kubelet-preferred-address-types", o.KubeletPreferredAddressTypes, "The priority of node address types to use when determining which address to use to connect to a particular node")
+	flags.StringVar(&o.KubeletCAFile, "kubelet-certificate-authority", "", "Path to the CA to use to validate the Kubelet's serving certificates.")
 
 	flags.MarkDeprecated("deprecated-kubelet-completely-insecure", "This is rarely the right option, since it leaves kubelet communication completely insecure.  If you encounter auth errors, make sure you've enabled token webhook auth on the Kubelet, and if you're in a test cluster with self-signed Kubelet certificates, consider using kubelet-insecure-tls instead.")
 
@@ -89,6 +90,7 @@ type MetricsServerOptions struct {
 	KubeletPort                  int
 	InsecureKubeletTLS           bool
 	KubeletPreferredAddressTypes []string
+	KubeletCAFile                string
 
 	DeprecatedCompletelyInsecureKubelet bool
 }
@@ -96,7 +98,7 @@ type MetricsServerOptions struct {
 // NewMetricsServerOptions constructs a new set of default options for metrics-server.
 func NewMetricsServerOptions() *MetricsServerOptions {
 	o := &MetricsServerOptions{
-		SecureServing:  genericoptions.WithLoopback(genericoptions.NewSecureServingOptions()),
+		SecureServing:  genericoptions.NewSecureServingOptions().WithLoopback(),
 		Authentication: genericoptions.NewDelegatingAuthenticationOptions(),
 		Authorization:  genericoptions.NewDelegatingAuthorizationOptions(),
 		Features:       genericoptions.NewFeatureOptions(),
@@ -119,7 +121,7 @@ func (o MetricsServerOptions) Config() (*apiserver.Config, error) {
 	}
 
 	serverConfig := genericapiserver.NewConfig(genericmetrics.Codecs)
-	if err := o.SecureServing.ApplyTo(serverConfig); err != nil {
+	if err := o.SecureServing.ApplyTo(&serverConfig.SecureServing, &serverConfig.LoopbackClientConfig); err != nil {
 		return nil, err
 	}
 
@@ -159,6 +161,8 @@ func (o MetricsServerOptions) Run(stopCh <-chan struct{}) error {
 	if err != nil {
 		return fmt.Errorf("unable to construct lister client config: %v", err)
 	}
+	// Use protobufs for communication with apiserver
+	clientConfig.ContentType = "application/vnd.kubernetes.protobuf"
 
 	// set up the informers
 	kubeClient, err := kubernetes.NewForConfig(clientConfig)
@@ -171,7 +175,12 @@ func (o MetricsServerOptions) Run(stopCh <-chan struct{}) error {
 	informerFactory := informers.NewSharedInformerFactory(kubeClient, 0)
 
 	// set up the source manager
-	kubeletConfig := summary.GetKubeletConfig(clientConfig, o.KubeletPort, o.InsecureKubeletTLS, o.DeprecatedCompletelyInsecureKubelet)
+	kubeletRestCfg := rest.CopyConfig(clientConfig)
+	if len(o.KubeletCAFile) > 0 {
+		kubeletRestCfg.TLSClientConfig.CAFile = o.KubeletCAFile
+		kubeletRestCfg.TLSClientConfig.CAData = nil
+	}
+	kubeletConfig := summary.GetKubeletConfig(kubeletRestCfg, o.KubeletPort, o.InsecureKubeletTLS, o.DeprecatedCompletelyInsecureKubelet)
 	kubeletClient, err := summary.KubeletClientFor(kubeletConfig)
 	if err != nil {
 		return fmt.Errorf("unable to construct a client to connect to the kubelets: %v", err)
