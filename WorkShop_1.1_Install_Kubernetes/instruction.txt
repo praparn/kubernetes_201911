@@ -8,7 +8,7 @@ Link for download:
 
 4. Initial kubernetes by command:
     sudo su -
-    kubeadm init --kubernetes-version=v1.16.0 --pod-network-cidr=192.168.0.0/16 
+    kubeadm init --kubernetes-version=v1.16.0 --pod-network-cidr=192.168.0.0/16
     exit
 
 5. Setup credential for regular user by command:

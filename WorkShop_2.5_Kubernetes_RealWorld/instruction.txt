@@ -3,7 +3,7 @@ Note: This instruction will start lab for kubernetes's cluster for real workshop
 
 0. Reinitial your machine before grouping with your friend by command:
 	sudo su -
-    kubeadm reset           ==> Answer 'y' 2 times
+    kubeadm reset
 	sudo rm -rf /var/lib/etcd
     docker system prune -af
 	reboot
