@@ -3,7 +3,7 @@ Instructor for Monitor Kubernetes Farm with Prometheus and Grafana:
 Part1: Install Metric Server
 ====================================================
 1. (Master) Create Metric Server:
-	cd ~/kubernetes_201907/WorkShop_2.8_HPA_WorkShop/metrics-server/
+	cd ~/kubernetes_201911/WorkShop_2.8_HPA_WorkShop/metrics-server/
 	kubectl create -f deploy/1.8+/
 	kubectl get pods --all-namespaces
 	kubectl logs pods/<metrics's pods name> -n=kube-system
@@ -38,7 +38,7 @@ Part2: Install Helm & Tiller
 Part3: Create Application and Service for Operate
 ====================================================
 1. (Master) Create HPA by command:
-	kubectl create -f webtest_deploy_hpa.yml (In case github: kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_20180701/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml
 	 
 2. (Master) Check Pods status by command:
 	kubectl get deployment/webtest -o wide
@@ -68,7 +68,7 @@ alertmanagers.monitoring.coreos.com           2019-03-09T17:17:05Z
 	############################################
 
 *Remark: In case you need to roll-back this case: (Wait 5 min before start next deploy)
-	helm delete prometheus-operator
+helm delete prometheus-operator
 kubectl delete crd prometheuses.monitoring.coreos.com
 kubectl delete crd prometheusrules.monitoring.coreos.com
 kubectl delete crd servicemonitors.monitoring.coreos.com
@@ -112,4 +112,4 @@ Part5: Test generate load
 
 4. (Master) CleanUp Lab
 	kubectl delete deployment/load-generator
-	kubectl delete -f webtest_deploy_hpa.yml (In case github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201907/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
+	kubectl delete -f webtest_deploy_hpa.yml (In case github: kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_201911/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml)
